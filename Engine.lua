@@ -360,7 +360,7 @@ function ns.Alerts(guide)
 
   local gsk = ns.Skill(guide.skills[1])
   if guide.tool and gsk.known and ns.Count(guide.tool) == 0 then
-    add("warn", "No " .. ns.IconText(guide.tool) .. " " .. ns.ItemName(guide.tool) .. " in your bags. You can't gather without it.")
+    add("warn", "No " .. ns.IconText(guide.tool) .. "  " .. ns.ItemName(guide.tool) .. " in your bags. You can't gather without it.")
   end
   if guide.tracking and gsk.known and ns.TrackingActive(guide.tracking) == false then
     add("info", "Turn on " .. guide.tracking .. " (Professions window) to see nodes on the minimap.")
@@ -373,7 +373,7 @@ function ns.Alerts(guide)
       if not poleEquipped() then
         add("info", "Equip your fishing pole.")
       elseif GetWeaponEnchantInfo and not GetWeaponEnchantInfo() and step.lure then
-        add("warn", "No lure on your pole. Use " .. ns.IconText(step.lure) .. " " .. ns.ItemName(step.lure)
+        add("warn", "No lure on your pole. Use " .. ns.IconText(step.lure) .. "  " .. ns.ItemName(step.lure)
           .. " (" .. ns.Count(step.lure) .. " in bags).")
       end
     end

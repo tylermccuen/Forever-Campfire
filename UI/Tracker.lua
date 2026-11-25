@@ -60,7 +60,7 @@ local function build()
   t.now = t:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   t.now:SetPoint("TOPLEFT", t.step, "BOTTOMLEFT", 0, -3); t.now:SetWidth(264); t.now:SetJustifyH("LEFT")
   t.alert = t:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  t.alert:SetPoint("TOPLEFT", t.now, "BOTTOMLEFT", 0, -4); t.alert:SetWidth(264); t.alert:SetJustifyH("LEFT")
+  t.alert:SetPoint("TOPLEFT", t.now, "BOTTOMLEFT", 0, -4); t.alert:SetWidth(264); t.alert:SetJustifyH("LEFT"); t.alert:SetSpacing(5); t.now:SetSpacing(3)
 end
 
 function ns.UpdateTracker()

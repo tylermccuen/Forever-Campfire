@@ -191,7 +191,7 @@ function ns.OnMerchant()
       said[itemId] = true
       local need, have = wantItem[itemId], ns.Count(itemId)
       if have < need then
-        ns.Print("This vendor sells " .. ns.IconText(itemId) .. " " .. C.gold .. ns.ItemName(itemId) .. C.r
+        ns.Print("This vendor sells " .. ns.IconText(itemId) .. "  " .. C.gold .. ns.ItemName(itemId) .. C.r
           .. ": you need " .. C.white .. (need - have) .. C.r .. " more (have " .. have .. "/" .. need .. ").")
       end
     end

@@ -51,11 +51,11 @@ function ns.StepBody(step)
       local needs = ns.OptionNeeds(step, opt)
       for k, n in ipairs(needs) do
         if not opt.count and k > 1 then
-          add("   " .. ns.IconText(n.id) .. " " .. ns.ItemName(n.id) .. ": " .. C.white .. ns.Count(n.id) .. C.r .. " in bags (one per craft)")
+          add("   " .. ns.IconText(n.id) .. "  " .. ns.ItemName(n.id) .. ": " .. C.white .. ns.Count(n.id) .. C.r .. " in bags (one per craft)")
         elseif opt.count then
-          add("   " .. ns.IconText(n.id) .. " " .. ns.ItemName(n.id) .. "  " .. ns.Have(n.id, n.need))
+          add("   " .. ns.IconText(n.id) .. "  " .. ns.ItemName(n.id) .. "  " .. ns.Have(n.id, n.need))
         else
-          add("   " .. ns.IconText(n.id) .. " " .. ns.ItemName(n.id) .. ": " .. C.white .. ns.Count(n.id) .. C.r .. " in bags. Cook them all.")
+          add("   " .. ns.IconText(n.id) .. "  " .. ns.ItemName(n.id) .. ": " .. C.white .. ns.Count(n.id) .. C.r .. " in bags. Cook them all.")
         end
       end
       if step.kind == "level" and state == "current" and opt.count then
@@ -66,7 +66,7 @@ function ns.StepBody(step)
     if opt.buy and state ~= "done" then
       add(C.gold .. (opt.buyLabel or step.guide.buyLabel or "Buy on the Auction House:") .. C.r)
       for _, b in ipairs(opt.buy) do
-        add("   " .. ns.IconText(b.id) .. " " .. ns.ItemName(b.id) .. "  " .. ns.Have(b.id, b.count))
+        add("   " .. ns.IconText(b.id) .. "  " .. ns.ItemName(b.id) .. "  " .. ns.Have(b.id, b.count))
       end
     end
     for _, n in ipairs(opt.notes or {}) do
@@ -78,27 +78,27 @@ function ns.StepBody(step)
   if step.catch and state ~= "done" then
     add(C.gold .. (step.guide.catchLabel or "You'll catch:") .. C.r)
     for _, c in ipairs(step.catch) do
-      local s = "   " .. ns.IconText(c[1]) .. " " .. ns.ItemName(c[1]) .. ": " .. C.white .. ns.Count(c[1]) .. C.r .. " in bags"
-      if #step.catch > 3 then s = "   " .. ns.IconText(c[1]) .. " " .. ns.ItemName(c[1]) .. " " .. C.grey .. "(" .. ns.Count(c[1]) .. ")" .. C.r end
+      local s = "   " .. ns.IconText(c[1]) .. "  " .. ns.ItemName(c[1]) .. ": " .. C.white .. ns.Count(c[1]) .. C.r .. " in bags"
+      if #step.catch > 3 then s = "   " .. ns.IconText(c[1]) .. "  " .. ns.ItemName(c[1]) .. " " .. C.grey .. "(" .. ns.Count(c[1]) .. ")" .. C.r end
       if c[2] and c[2] > 0 then s = s .. C.grey .. " (about " .. c[2] .. " expected)" .. C.r end
       add(s)
     end
   end
-  if step.lure then add(C.gold .. "Lure: " .. C.r .. ns.IconText(step.lure) .. " " .. ns.ItemName(step.lure) .. "  " .. C.grey .. "(" .. ns.Count(step.lure) .. " in bags)" .. C.r) end
+  if step.lure then add(C.gold .. "Lure: " .. C.r .. ns.IconText(step.lure) .. "  " .. ns.ItemName(step.lure) .. "  " .. C.grey .. "(" .. ns.Count(step.lure) .. " in bags)" .. C.r) end
 
   if step.gather then
     add(" ")
     add(C.gold .. "Have before you go:" .. C.r)
     for _, g in ipairs(step.gather) do
       local note = ns.FText(g.note)
-      add("   " .. ns.IconText(g.id) .. " " .. ns.ItemName(g.id) .. "  " .. ns.Have(g.id, g.count) .. (note and (C.grey .. "  " .. note .. C.r) or ""))
+      add("   " .. ns.IconText(g.id) .. "  " .. ns.ItemName(g.id) .. "  " .. ns.Have(g.id, g.count) .. (note and (C.grey .. "  " .. note .. C.r) or ""))
     end
   end
   if step.buy then
     add(C.gold .. "Buy:" .. C.r)
     for _, b in ipairs(step.buy) do
       local note = ns.FText(b.note)
-      add("   " .. ns.IconText(b.id) .. " " .. ns.ItemName(b.id) .. "  " .. ns.Have(b.id, b.count) .. (note and (C.grey .. "  " .. note .. C.r) or ""))
+      add("   " .. ns.IconText(b.id) .. "  " .. ns.ItemName(b.id) .. "  " .. ns.Have(b.id, b.count) .. (note and (C.grey .. "  " .. note .. C.r) or ""))
     end
   end
   for _, n in ipairs(step.notes or {}) do

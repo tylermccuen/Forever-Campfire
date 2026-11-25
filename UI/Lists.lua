@@ -106,7 +106,7 @@ end
 local function matsLines(mats)
   local out = {}
   for _, m in ipairs(mats) do
-    table.insert(out, "   " .. ns.IconText(m[1]) .. " " .. ns.ItemName(m[1]) .. "  " .. ns.Have(m[1], m[2]))
+    table.insert(out, "   " .. ns.IconText(m[1]) .. "  " .. ns.ItemName(m[1]) .. "  " .. ns.Have(m[1], m[2]))
   end
   return out
 end

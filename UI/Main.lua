@@ -334,7 +334,7 @@ local function updateShop()
   local list = ns.ShoppingList(g)
   for _, it in ipairs(list) do
     local col = (it.have >= it.need) and C.green or C.red
-    table.insert(lines, ns.IconText(it.id) .. " " .. ns.ItemName(it.id) .. "  " .. col .. it.have .. "/" .. it.need .. C.r
+    table.insert(lines, ns.IconText(it.id) .. "  " .. ns.ItemName(it.id) .. "  " .. col .. it.have .. "/" .. it.need .. C.r
       .. (it.vendor and (C.grey .. "  (vendor)" .. C.r) or ""))
   end
   if #list == 0 then table.insert(lines, C.grey .. "Nothing to buy: this route uses what you gather." .. C.r) end
@@ -561,10 +561,10 @@ local function build()
   d.label = fs("GameFontNormalSmall")
   d.title = fs("GameFontNormalHuge", d.label, 6)
   d.now = fs("GameFontHighlight", d.title, 6)
-  d.alerts = fs("GameFontHighlight", d.now, 10); d.alerts:SetSpacing(3)
-  d.body = fs("GameFontHighlight", d.alerts, 10); d.body:SetSpacing(4)
+  d.alerts = fs("GameFontHighlight", d.now, 10); d.alerts:SetSpacing(6)
+  d.body = fs("GameFontHighlight", d.alerts, 10); d.body:SetSpacing(6)
   d.catchTitle = fs("GameFontNormal", d.body, 20)
-  d.catch = fs("GameFontHighlight", d.catchTitle, 6); d.catch:SetSpacing(4)
+  d.catch = fs("GameFontHighlight", d.catchTitle, 6); d.catch:SetSpacing(6)
   d.catchBg = d.inner:CreateTexture(nil, "BACKGROUND")
   d.catchBg:SetColorTexture(0.06, 0.13, 0.17, 0.9)
   d.catchBg:SetPoint("TOPLEFT", d.catchTitle, "TOPLEFT", -6, 6)
@@ -606,7 +606,7 @@ local function build()
   shop:SetPoint("TOPLEFT", f, "TOPRIGHT", -4, -40)
   shop:SetSize(320, 460)
   shop.text = shop:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  shop.text:SetPoint("TOPLEFT", 10, -10); shop.text:SetJustifyH("LEFT"); shop.text:SetSpacing(3)
+  shop.text:SetPoint("TOPLEFT", 10, -10); shop.text:SetJustifyH("LEFT"); shop.text:SetSpacing(6)
   shop:SetScript("OnShow", updateShop)
   shop:Hide()
 

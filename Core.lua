@@ -236,8 +236,11 @@ function ns.ItemIcon(id)
   return icon or 134400 -- question mark
 end
 
+-- An item icon inside text. The icon's built-in border is trimmed so it looks
+-- crisp at small sizes. Text that shows these icons has extra line spacing.
 function ns.IconText(id, size)
-  return "|T" .. tostring(ns.ItemIcon(id)) .. ":" .. (size or 14) .. "|t"
+  size = size or 17
+  return "|T" .. tostring(ns.ItemIcon(id)) .. ":" .. size .. ":" .. size .. ":0:0:64:64:5:59:5:59|t"
 end
 
 -- Bag scan: counts by item ID and by name, so a wrong ID in the data still
