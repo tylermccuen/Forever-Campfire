@@ -394,6 +394,23 @@ check(campProfs == 12, "camp items for all 12 professions")
 ns.ShowMain("camp"); ns.ShowMain("both"); ns.views.both = "recipes"; ns.UpdateMain(); ns.views.both = "route"
 check(true, "Camp tab and Recipes view open without errors")
 do
+  local missing = {}
+  for _, key in ipairs({ "firstaid", "alchemy", "blacksmithing", "enchanting", "engineering", "leatherworking", "tailoring", "cooking" }) do
+    for _, step in ipairs(ns.guides[key].steps) do
+      for _, opt in ipairs(step.options or {}) do
+        if opt.product and not opt.recipeFrom and not ns.LearnLine(step.skill, opt.recipe) then
+          table.insert(missing, key .. ": " .. opt.recipe)
+        end
+      end
+    end
+  end
+  check(#missing == 0, "every route recipe says where it's learned" .. (#missing > 0 and (" (missing: " .. table.concat(missing, "; ") .. ")") or ""))
+  local line = ns.LearnLine("alchemy", "Elixir of Greater Intellect")
+  check(line and line:find("Alchemy trainer at 235"), "trainer recipes name the trainer and skill")
+  line = ns.LearnLine("enchanting", "Enchant Cloak - Minor Protection")
+  check(line and line:find("Formula: Imbue Cloak %- Protection") and line:find("Trainers don't teach it"), "recipe items say trainers don't teach them")
+end
+do
   local ev = ns.miniGameEvents
   local fire = ev.scripts.OnEvent
   ns.db.minigame = true

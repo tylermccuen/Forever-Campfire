@@ -46,7 +46,8 @@ function ns.StepBody(step)
     local hdr = C.gold .. kind .. C.r .. C.white .. (opt.product and opt.recipe or (opt.name or opt.recipe)) .. C.r
     if opt.count and opt.count > 1 then hdr = hdr .. C.grey .. "  (about " .. opt.count .. " crafts in all)" .. C.r end
     add(hdr)
-    if opt.recipeFrom then addList(add, "Recipe from", ns.FText(opt.recipeFrom)) end
+    if opt.recipeFrom then addList(add, "Recipe from", ns.FText(opt.recipeFrom))
+    elseif opt.product then add(ns.LearnLine(step.skill, opt.recipe)) end
     if opt.mats and state ~= "done" then
       local needs = ns.OptionNeeds(step, opt)
       for k, n in ipairs(needs) do

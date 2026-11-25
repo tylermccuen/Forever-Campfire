@@ -112,3 +112,42 @@ ev:SetScript("OnEvent", function()
   if not ns.char then return end
   if C_Timer and C_Timer.After then C_Timer.After(0.5, function() pcall(ns.ScanKnownRecipes) end) else pcall(ns.ScanKnownRecipes) end
 end)
+
+
+-- One line saying where a route recipe is learned, or that you know it already.
+-- Uses Data/RecipeSources.lua, or the profession's recipe collection (Cooking).
+function ns.LearnLine(skillKey, recipe)
+  local C = ns.C
+  if not skillKey or not recipe then return nil end
+  if ns.KnowsRecipe(skillKey, recipe) == true then return C.green .. "You know this recipe." .. C.r end
+  local prof = ns.SkillDisplayName(skillKey)
+  local kind, skill, item, who
+  local list = ns.RecipeSources[skillKey]
+  local src = list and list[recipe]
+  if src then
+    if src[1] == "start" then kind = "start"
+    elseif src[1] == "trainer" then kind, skill, who = "trainer", src[2], src.who
+    else kind, item, skill = "item", src[1], src[2] end
+  else
+    local col = ns.Collections and ns.Collections[skillKey]
+    if not col then return nil end
+    for _, r in ipairs(col.recipes) do
+      if r.name == recipe then
+        if r.source == "Trainer" then kind, skill = "trainer", r.skill
+        elseif r.source:find("^Known with") then kind = "start"
+        else kind, item, skill = "other", r.source, r.skill end
+        break
+      end
+    end
+  end
+  local L = C.gold .. "Learn: " .. C.r
+  if kind == "start" then return L .. "you know it as soon as you learn " .. prof .. "." end
+  if kind == "trainer" then
+    return L .. "from " .. (who or ("your " .. prof .. " trainer")) .. (skill and (" at " .. skill) or "") .. "."
+  end
+  if kind == "item" then
+    return L .. C.white .. item .. C.r .. (skill and (", usable at " .. skill) or "") .. ". Trainers don't teach it."
+  end
+  if kind == "other" then return L .. item .. (skill and (C.grey .. " (skill " .. skill .. ")" .. C.r) or "") end
+  return nil
+end

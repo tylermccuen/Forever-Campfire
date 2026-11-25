@@ -11,6 +11,7 @@
 - Proofread every guide: full sentences instead of fragments, proper plurals in material counts, and the same wording for the same advice across professions.
 - Fixed: Sizzle! didn't pop up when crafting. It now notices the profession window on every client, and it also starts for crafts with no cast bar.
 - Bigger item icons in material lists, the shopping list and alerts, with more space between lines so they no longer run into the text. Step tiles have bigger icons too.
+- Every crafting step now has a "Learn:" line: whether the recipe comes from your trainer (and at what skill), comes with the profession, or needs a plans, pattern, formula, schematic or manual item. Once you know a recipe, it says so instead.
 - New `/fc mem` shows how much memory the addon uses.
 
 ## 0.6.1

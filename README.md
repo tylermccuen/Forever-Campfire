@@ -39,6 +39,8 @@ Leveling guide for every WoW Forever profession (Cooking, Fishing, First Aid, Mi
 5. List the file in `ForeverCampfire.toc` after the other Data files. The new tab, tracker, tooltips, shopping list and vendor alerts all work without further changes.
 6. Set `verb = "Craft"` (or "Smelt", "Brew"...) on the guide so the NOW box doesn't say "Cook".
 
+Where each route recipe is learned lives in `Data/RecipeSources.lua` (trainer, known from the start, or a recipe item and its skill). Add new route recipes there too; the offline test fails if a route recipe has no source.
+
 Other big data works the same way: `ns.Lazy("Camp", function() return {...} end)` builds `ns.Camp` the first time it's read, and `ns.LazyCollection(header, function() return recipes end)` does the same for a recipe collection. Long lists (the Recipes view) only draw the rows on screen, so a collection can hold hundreds of recipes.
 
 Test offline: `texlua tools/test.lua ForeverCampfire`. `/fc mem` shows the addon's memory in game and which guides are loaded.

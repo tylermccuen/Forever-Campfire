@@ -28,6 +28,7 @@ Data\Leatherworking.lua
 Data\Tailoring.lua
 Data\MapPins.lua
 Data\CookingRecipes.lua
+Data\RecipeSources.lua
 Data\Camp.lua
 Engine.lua
 Catch.lua

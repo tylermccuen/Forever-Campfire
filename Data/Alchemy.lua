@@ -60,10 +60,9 @@ ns.RegisterGuide({
     Craft("b11", 225, 235, "Keep making Nature Protection Potions", { Opt("A", "Nature Protection Potion", 26, { { "Liferoot", 1 }, { "Stranglekelp", 1 }, { "Leaded Vial", 1 } }) },
       { "Optional: Transmute: Iron to Gold or Mithril to Truesilver (Alchemist Pestlezugg, Tanaris) gives a point each until 240. Each has a 1-hour cooldown." }),
     Craft("b12", 235, 250, "Make Elixir of Greater Intellect", { Opt("A", "Elixir of Greater Intellect", 15, { { "Blindweed", 1 }, { "Khadgar's Whisker", 1 }, { "Crystal Vial", 1 } }) },
-      { "Learn it from your Alchemy trainer once you reach 235. There's no recipe to buy.",
-        { H = "Rogvar in Stonard (Swamp of Sorrows) teaches it.", A = "Kylanna Windwhisper in Feathermoon Stronghold (Feralas) teaches it." } }),
+      { { H = "Rogvar in Stonard (Swamp of Sorrows) teaches it.", A = "Kylanna Windwhisper in Feathermoon Stronghold (Feralas) teaches it." } }),
     Craft("b13", 250, 260, "Make Stonescale Oil", {
-      Opt("A", "Stonescale Oil", 47, { { "Stonescale Eel", 1 }, { "Leaded Vial", 1 } }, { notes = { "Learn it from your Alchemy trainer at 250.", "Each craft makes 2 oils. Keep them all: you need 88." } }),
+      Opt("A", "Stonescale Oil", 47, { { "Stonescale Eel", 1 }, { "Leaded Vial", 1 } }, { notes = { "Each craft makes 2 oils. Keep them all: you need 88." } }),
       Opt("B", "Elixir of Greater Intellect", 21, { { "Blindweed", 1 }, { "Khadgar's Whisker", 1 }, { "Crystal Vial", 1 } },
         { notes = { "If Stonescale Eel is expensive: make these to 265, then Superior Mana Potions to 300." } }),
     }),
