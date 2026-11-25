@@ -56,7 +56,7 @@ local function flip()
 end
 
 local function build()
-  g = CreateFrame("Button", "ForeverProfGuideSizzle", UIParent, "BackdropTemplate")
+  g = CreateFrame("Button", "ForeverCampfireSizzle", UIParent, "BackdropTemplate")
   g:SetBackdrop(ns.BACKDROP)
   g:SetBackdropColor(0.12, 0.05, 0, 0.92); g:SetBackdropBorderColor(1, 0.5, 0.1, 1)
   g:SetSize(W + 30, 96)
@@ -132,7 +132,7 @@ function ns.InitMiniGame()
   end)
 end
 
--- /fpg sizzle lets people try it without crafting
+-- /fc sizzle lets people try it without crafting
 function ns.ShowMiniGame()
   if not g then build() end
   lastCast = GetTime() + 25

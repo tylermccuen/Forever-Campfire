@@ -34,7 +34,7 @@ end
 local function tooltipLines(tt, id, name)
   if not ns.db.tooltips then return end
   local colLine = ns.CollectionTooltipLine and ns.CollectionTooltipLine(name)
-  if colLine then tt:AddLine("|TInterface\\Icons\\INV_Misc_Fish_02:12|t " .. colLine); tt:Show() end
+  if colLine then tt:AddLine("|TInterface\\Icons\\Spell_Fire_Fire:12|t " .. colLine); tt:Show() end
   local list = (id and uses[id]) or (name and usesByName[name])
   if not list then return end
   local shown, seen = 0, {}
@@ -62,7 +62,7 @@ local function tooltipLines(tt, id, name)
       else
         txt = label .. ": you'll catch these here"
       end
-      if shown == 0 then tt:AddLine("|TInterface\\Icons\\INV_Misc_Fish_02:12|t " .. C.gold .. "Profession Guide" .. C.r) end
+      if shown == 0 then tt:AddLine("|TInterface\\Icons\\Spell_Fire_Fire:12|t " .. C.gold .. "Forever Campfire" .. C.r) end
       tt:AddLine("  " .. txt, 1, 1, 1)
       shown = shown + 1
       seen[step] = true

@@ -360,7 +360,7 @@ function ns.UpdateMain()
   ns.LayoutTabs()
   if empty then updateWelcome(); return end
   local checked = ns.guides[selected] and ns.guides[selected].checked or ns.Camp.checked
-  f.source:SetText("Updated " .. (checked or "?") .. "  •  /fpg for commands")
+  f.source:SetText("Updated " .. (checked or "?") .. "  •  /fc for commands")
   updateBars()
   updateTree()
   updateDetail()
@@ -377,7 +377,7 @@ local function button(parent, text, w)
 end
 
 local function build()
-  f = CreateFrame("Frame", "ForeverProfGuideFrame", UIParent, "BackdropTemplate")
+  f = CreateFrame("Frame", "ForeverCampfireFrame", UIParent, "BackdropTemplate")
   f:SetBackdrop({ bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
                   tile = true, tileSize = 32, edgeSize = 24, insets = { left = 6, right = 6, top = 6, bottom = 6 } })
   local sz = ns.db.mainSize2
@@ -394,11 +394,11 @@ local function build()
   f:SetScript("OnShow", function() ns.RequestRefresh() end)
   f:SetScript("OnSizeChanged", function() if f:IsShown() then ns.UpdateMain() end end)
   f:Hide()
-  tinsert(UISpecialFrames, "ForeverProfGuideFrame")
+  tinsert(UISpecialFrames, "ForeverCampfireFrame")
 
   local title = f:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
   title:SetPoint("TOP", 0, -14)
-  title:SetText("|TInterface\\Icons\\INV_Misc_Fish_02:18|t Forever Profession Guide")
+  title:SetText("|TInterface\\Icons\\Spell_Fire_Fire:18|t Forever Campfire")
 
   local close = CreateFrame("Button", nil, f, "UIPanelCloseButton")
   close:SetPoint("TOPRIGHT", -4, -4)
@@ -550,7 +550,7 @@ function ns.ShowMain(key)
   if not f then build() end
   selected = key or selected or ns.char.activeGuide or ns.TrackedGuideKey()
   if selected ~= "camp" and not ns.guides[selected] then selected = ns.guideOrder[1] end
-  -- asking for an untrained guide (e.g. /fpg mining) shows it, so turn on all tabs
+  -- asking for an untrained guide (e.g. /fc mining) shows it, so turn on all tabs
   if key and key ~= "camp" and not ns.GuideKnown(ns.guides[key]) and not ns.db.showAll then ns.db.showAll = true end
   ns.char.activeGuide = selected
   f:Show()

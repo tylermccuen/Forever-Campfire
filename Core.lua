@@ -1,4 +1,4 @@
--- Forever Profession Guide: shared namespace, saved settings, helpers.
+-- Forever Campfire: shared namespace, saved settings, helpers.
 local ADDON, ns = ...
 ns.ADDON = ADDON
 local getMeta = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
@@ -62,12 +62,12 @@ local function fill(dst, src)
 end
 
 function ns.InitDB()
-  ForeverProfGuideDB = ForeverProfGuideDB or {}
-  ForeverProfGuideCharDB = ForeverProfGuideCharDB or {}
-  fill(ForeverProfGuideDB, DEFAULTS)
-  fill(ForeverProfGuideCharDB, CHAR_DEFAULTS)
-  ns.db = ForeverProfGuideDB
-  ns.char = ForeverProfGuideCharDB
+  ForeverCampfireDB = ForeverCampfireDB or {}
+  ForeverCampfireCharDB = ForeverCampfireCharDB or {}
+  fill(ForeverCampfireDB, DEFAULTS)
+  fill(ForeverCampfireCharDB, CHAR_DEFAULTS)
+  ns.db = ForeverCampfireDB
+  ns.char = ForeverCampfireCharDB
 end
 
 -- Guides register themselves from the Data files.
@@ -135,7 +135,7 @@ end
 
 function ns.Print(msg)
   local f = DEFAULT_CHAT_FRAME
-  if f then f:AddMessage("|cff33ff99Profession Guide|r: " .. msg) end
+  if f then f:AddMessage("|cffff9933Forever Campfire|r: " .. msg) end
 end
 
 ---------------------------------------------------------------------------

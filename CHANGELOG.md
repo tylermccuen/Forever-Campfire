@@ -1,4 +1,4 @@
-# Forever Profession Guide
+# Forever Campfire
 
 ## 0.6.1
 

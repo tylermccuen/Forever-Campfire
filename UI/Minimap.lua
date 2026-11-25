@@ -1,7 +1,7 @@
 -- Fish minimap button (drag around the minimap edge) + addon compartment entry.
 local _, ns = ...
 
-local ICON = "Interface\\Icons\\INV_Misc_Fish_02"
+local ICON = "Interface\\Icons\\Spell_Fire_Fire"
 local btn
 
 local function place()
@@ -13,7 +13,7 @@ end
 
 local function tooltip(owner)
   GameTooltip:SetOwner(owner, "ANCHOR_LEFT")
-  GameTooltip:SetText("|T" .. ICON .. ":16|t Forever Profession Guide")
+  GameTooltip:SetText("|T" .. ICON .. ":16|t Forever Campfire")
   for _, key in ipairs(ns.guideOrder) do
     local g = ns.guides[key]
     if #g.skills == 1 then
@@ -43,7 +43,7 @@ local function click(button)
 end
 
 function ns.InitMinimap()
-  btn = CreateFrame("Button", "ForeverProfGuideMinimapButton", Minimap)
+  btn = CreateFrame("Button", "ForeverCampfireMinimapButton", Minimap)
   btn:SetSize(31, 31)
   btn:SetFrameStrata("MEDIUM"); btn:SetFrameLevel(8)
   btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
@@ -81,6 +81,6 @@ function ns.UpdateMinimap()
 end
 
 -- Addon compartment (the dropdown under the minimap); names come from the TOC.
-function ForeverProfGuide_OnCompartmentClick(_, button) click(button) end
-function ForeverProfGuide_OnCompartmentEnter(_, frame) tooltip(frame) end
-function ForeverProfGuide_OnCompartmentLeave() GameTooltip:Hide() end
+function ForeverCampfire_OnCompartmentClick(_, button) click(button) end
+function ForeverCampfire_OnCompartmentEnter(_, frame) tooltip(frame) end
+function ForeverCampfire_OnCompartmentLeave() GameTooltip:Hide() end

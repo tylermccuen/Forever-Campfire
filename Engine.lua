@@ -1,4 +1,4 @@
--- Forever Profession Guide: skill detection, step progress, alerts, events.
+-- Forever Campfire: skill detection, step progress, alerts, events.
 local ADDON, ns = ...
 local C = ns.C
 
@@ -578,9 +578,9 @@ end)
 ---------------------------------------------------------------------------
 -- Slash commands
 ---------------------------------------------------------------------------
-SLASH_FOREVERPROFGUIDE1 = "/fpg"
-SLASH_FOREVERPROFGUIDE2 = "/profguide"
-SlashCmdList.FOREVERPROFGUIDE = function(msg)
+SLASH_FOREVERCAMPFIRE1 = "/fc"
+SLASH_FOREVERCAMPFIRE2 = "/campfire"
+SlashCmdList.FOREVERCAMPFIRE = function(msg)
   msg = (msg or ""):lower():gsub("^%s+", ""):gsub("%s+$", "")
   if msg == "" then ns.ToggleMain()
   elseif msg == "cooking" or msg == "cook" then ns.ShowMain("cooking")
@@ -607,6 +607,6 @@ SlashCmdList.FOREVERPROFGUIDE = function(msg)
     ns.Print("Reset recipe choices and window positions. /reload to re-center windows.")
     ns.RequestRefresh()
   else
-    ns.Print("/fpg — open guide | cooking | fishing | both | mining | herbalism | skinning | shop | map | pins | catches | sizzle | tracker | lock | minimap | reset")
+    ns.Print("/fc — open guide | cooking | fishing | both | mining | herbalism | skinning | shop | map | pins | catches | sizzle | tracker | lock | minimap | reset")
   end
 end

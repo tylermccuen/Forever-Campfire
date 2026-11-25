@@ -1,15 +1,15 @@
 ## Interface: 16001
-## Title: Forever Profession Guide
+## Title: Forever Campfire
 ## Notes: Step-by-step leveling guide for every WoW Forever profession that follows your skill as you level.
 ## Author: tylermccuen
 ## X-Curse-Project-ID: 000000
 ## Version: @project-version@
-## IconTexture: Interface\Icons\INV_Misc_Fish_02
-## SavedVariables: ForeverProfGuideDB
-## SavedVariablesPerCharacter: ForeverProfGuideCharDB
-## AddonCompartmentFunc: ForeverProfGuide_OnCompartmentClick
-## AddonCompartmentFuncOnEnter: ForeverProfGuide_OnCompartmentEnter
-## AddonCompartmentFuncOnLeave: ForeverProfGuide_OnCompartmentLeave
+## IconTexture: Interface\Icons\Spell_Fire_Fire
+## SavedVariables: ForeverCampfireDB
+## SavedVariablesPerCharacter: ForeverCampfireCharDB
+## AddonCompartmentFunc: ForeverCampfire_OnCompartmentClick
+## AddonCompartmentFuncOnEnter: ForeverCampfire_OnCompartmentEnter
+## AddonCompartmentFuncOnLeave: ForeverCampfire_OnCompartmentLeave
 
 Core.lua
 Data\Items.lua

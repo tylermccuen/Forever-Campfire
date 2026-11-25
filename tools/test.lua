@@ -1,6 +1,6 @@
 -- Offline test: stub the WoW API, load the addon in TOC order, run scenarios.
--- Run: texlua tools/test.lua ForeverProfessionGuide
-local dir = arg[1] or "ForeverProfessionGuide"
+-- Run: texlua tools/test.lua ForeverCampfire
+local dir = arg[1] or "ForeverCampfire"
 local fails = 0
 local function check(cond, msg) if cond then print("ok   " .. msg) else fails = fails + 1; print("FAIL " .. msg) end end
 
@@ -79,15 +79,15 @@ GetMerchantItemID = function(i) return S.merchant[i].id end
 
 -- ---------- load addon ----------
 local ns = {}
-for line in io.lines(dir .. "/ForeverProfessionGuide.toc") do
+for line in io.lines(dir .. "/ForeverCampfire.toc") do
   if not line:match("^#") and line:match("%.lua$") then
     local path = dir .. "/" .. line:gsub("\\", "/")
     local chunk = assert(loadfile(path))
-    chunk("ForeverProfessionGuide", ns)
+    chunk("ForeverCampfire", ns)
   end
 end
 check(#ns.guideOrder == 13, "13 guides registered")
-ns.eventFrame.scripts.OnEvent(ns.eventFrame, "ADDON_LOADED", "ForeverProfessionGuide")
+ns.eventFrame.scripts.OnEvent(ns.eventFrame, "ADDON_LOADED", "ForeverCampfire")
 check(ns.db and ns.char, "saved variables initialised")
 
 local function refresh() ns.Refresh() end
@@ -369,7 +369,7 @@ C_TradeSkillUI = nil
 for _, k in ipairs(ns.guideOrder) do ns.ShowMain(k) end; ns.ToggleShop(true); ns.UpdateTracker()
 ns.ShowMiniGame()
 check(true, "UI builds for all tabs, shop, tracker, mini-game")
-SlashCmdList.FOREVERPROFGUIDE("help")
+SlashCmdList.FOREVERCAMPFIRE("help")
 
 print(fails == 0 and "ALL PASSED" or (fails .. " FAILED"))
 os.exit(fails == 0 and 0 or 1)
