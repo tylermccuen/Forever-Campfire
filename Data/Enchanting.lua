@@ -20,7 +20,7 @@ ns.RegisterGuide({
   buyLabel = "Materials for this step:",
   rankUps = {
     [75]  = { name = "Journeyman Enchanting", skill = 50, level = 10, how = { H = "Godan (Orgrimmar), Lavinia Crowe (Undercity) or Teg Dawnstrider (Thunder Bluff)", A = "Lucan Cordell (Stormwind), Gimble Thistlefuzz (Ironforge) or Taladan (Darnassus)" } },
-    [150] = { name = "Expert Enchanting", skill = 125, level = 20, how = { H = "Hgarth at Sun Rock Retreat, Stonetalon Mountains (50 silver)", A = "Kitta Firewind at the top of the Tower of Azora, Elwynn Forest (50 silver)" } },
+    [150] = { name = "Expert Enchanting", skill = 125, level = 20, how = { H = "Hgarth at Sun Rock Retreat in Stonetalon Mountains (50 silver)", A = "Kitta Firewind at the top of the Tower of Azora in Elwynn Forest (50 silver)" } },
     [225] = { name = "Artisan Enchanting", skill = 200, level = 35, how = "Annora in Uldaman (the only Artisan trainer)" },
   },
   steps = {
@@ -40,7 +40,7 @@ ns.RegisterGuide({
     Craft("e3", 20, 70, "Inferior Stamina or Minor Deflect", {
       Opt("A", "Enchant Chest - Inferior Stamina", 50, { { "Strange Dust", 1 } }),
       Opt("B", "Enchant Bracer - Minor Deflect", 50, { { "Lesser Magic Essence", 1 } },
-        { notes = { "Right-click a Greater Magic Essence to split it into 3 Lesser." } }),
+        { notes = { "Right-click a Greater Magic Essence to split it into 3 Lesser Magic Essences." } }),
     }),
     Train("jm", 150, "Train Journeyman Enchanting", 50, 10,
       { { H = "Godan (Orgrimmar), Lavinia Crowe (Undercity) or Teg Dawnstrider (Thunder Bluff).", A = "Lucan Cordell (Stormwind), Gimble Thistlefuzz (Ironforge) or Taladan (Darnassus)." },
@@ -48,7 +48,7 @@ ns.RegisterGuide({
     Craft("e4", 70, 109, "Minor Absorption, or the Strange Dust path", {
       Opt("A", "Enchant Chest - Minor Absorption", 49, { { "Lesser Magic Essence", 1 } }),
       Opt("B", "Strange Dust path", nil, nil, {
-        product = false, verb = "Make", now = "Strange Dust path: Chest Inferior Stamina to 85, Bracer Minor Stamina to 100, Cloak Minor Protection to 109.",
+        product = false, verb = "Make", now = "Strange Dust path: Chest - Inferior Stamina to 85, Bracer - Minor Stamina to 100, then Cloak - Minor Protection to 109.",
         buy = { { id = "Strange Dust", count = 69 } },
         notes = { "70-85: 21 Enchant Chest - Inferior Stamina (1 Strange Dust).", "85-100: 15 Enchant Bracer - Minor Stamina (2 Strange Dust).", "100-109: 9 Enchant Cloak - Minor Protection (2 Strange Dust)." } }),
     }),
@@ -69,14 +69,14 @@ ns.RegisterGuide({
         "Buy the Minor Mana Oil and Lesser Wizard Oil formulas before you leave.",
         { H = "Maple Seed: Jeeda. Leaded Vial: Kulwia. Both in Sun Rock Retreat.", A = "Maple Seed and Leaded Vial: Dawn Brightstar at the Tower of Azora." } }),
     Craft("e8", 150, 151, "Make a Runed Golden Rod", { Opt("A", "Runed Golden Rod", 1, { { "Golden Rod", 1 }, { "Iridescent Pearl", 1 }, { "Greater Astral Essence", 1 }, { "Soul Dust", 1 } }) },
-      { "Golden Rods are made by Blacksmiths: Auction House." }),
+      { "Golden Rods are made by Blacksmiths: buy one on the Auction House." }),
     Craft("e9", 151, 165, "Make Minor Mana Oil", { Opt("A", "Minor Mana Oil", 16, { { "Soul Dust", 1 }, { "Maple Seed", 2 }, { "Leaded Vial", 1 } }) },
       nil, { recipes = { "Formula: Minor Mana Oil", "Formula: Lesser Wizard Oil" } }),
     Craft("e10", 165, 200, "Enchant Boots - Lesser Agility", { Opt("A", "Enchant Boots - Lesser Agility", 44, { { "Soul Dust", 1 } }) },
       { "Yellow from 180. Make extras if you fall short.", "Vision Dust cheap? From 185 you can make Enchant Bracer - Strength (1 Vision Dust) instead." }),
     Craft("e11", 200, 201, "Make a Runed Truesilver Rod", { Opt("A", "Runed Truesilver Rod", 1, { { "Truesilver Rod", 1 }, { "Black Pearl", 1 }, { "Greater Mystic Essence", 1 }, { "Vision Dust", 1 } }) }),
     Craft("e12", 201, 220, "Make Lesser Wizard Oil", { Opt("A", "Lesser Wizard Oil", 25, { { "Vision Dust", 1 }, { "Stranglethorn Seed", 2 }, { "Leaded Vial", 1 } }) },
-      { "Stranglethorn Seed: Reagent vendors. Leaded Vial: Alchemy Supply vendors." }),
+      { "Stranglethorn Seed: reagent vendors. Leaded Vial: Alchemy Supply vendors." }),
     Craft("e13", 220, 225, "Enchant Cloak - Greater Defense", { Opt("A", "Enchant Cloak - Greater Defense", 5, { { "Vision Dust", 1 } }) }),
     Train("art", 300, "Train Artisan Enchanting (Uldaman)", 200, 35, {
       "Annora in Uldaman is the only Artisan trainer. Use the back entrance in the Badlands.",
@@ -86,17 +86,17 @@ ns.RegisterGuide({
     Craft("e14", 225, 250, "Enchant Gloves - Agility", { Opt("A", "Enchant Gloves - Agility", 34, { { "Vision Dust", 1 } }) },
       { "Yellow from 230. Make extras if you fall short." }),
     Craft("e15", 250, 270, "Lesser Mana Oil, or Greater Strength", {
-      Opt("A", "Lesser Mana Oil", 26, { { "Dream Dust", 1 }, { "Purple Lotus", 1 }, { "Crystal Vial", 1 } }, { notes = { "Formula from Kania (Silithus, upstairs in the inn)." } }),
+      Opt("A", "Lesser Mana Oil", 26, { { "Dream Dust", 1 }, { "Purple Lotus", 1 }, { "Crystal Vial", 1 } }, { notes = { "Formula from Kania in Silithus (upstairs in the inn)." } }),
       Opt("B", "Enchant Bracer - Greater Strength", 23, { { "Dream Dust", 1 }, { "Lesser Nether Essence", 2 } }, { notes = { "No Purple Lotus? Use this." } }),
     }, nil, { recipes = { "Formula: Lesser Mana Oil", "Formula: Wizard Oil" } }),
     Craft("e16", 270, 275, "Enchant Shield - Greater Stamina", { Opt("A", "Enchant Shield - Greater Stamina", 5, { { "Dream Dust", 6 } }) },
       { { H = "Formula from Daniel Bartlett (Undercity). Binds when picked up.", A = "Formula from Mythrin'dir (Darnassus). Binds when picked up." } },
       { recipes = { "Formula: Enchant Shield - Greater Stamina" } }),
     Craft("e17", 275, 295, "Wizard Oil, or more Shields", {
-      Opt("A", "Wizard Oil", 26, { { "Illusion Dust", 3 }, { "Firebloom", 2 }, { "Crystal Vial", 1 } }, { notes = { "Formula from Kania (Silithus)." } }),
-      Opt("B", "Enchant Shield - Greater Stamina", 23, { { "Dream Dust", 6 } }, { notes = { "If Illusion Dust is expensive." } }),
+      Opt("A", "Wizard Oil", 26, { { "Illusion Dust", 3 }, { "Firebloom", 2 }, { "Crystal Vial", 1 } }, { notes = { "Formula from Kania in Silithus." } }),
+      Opt("B", "Enchant Shield - Greater Stamina", 23, { { "Dream Dust", 6 } }, { notes = { "Use this if Illusion Dust is expensive." } }),
     }),
-    Craft("e18", 295, 299, "More Shield - Greater Stamina", { Opt("A", "Enchant Shield - Greater Stamina", 8, { { "Dream Dust", 6 } }) },
+    Craft("e18", 295, 299, "Make more Shield - Greater Stamina", { Opt("A", "Enchant Shield - Greater Stamina", 8, { { "Dream Dust", 6 } }) },
       { "Wizard Oil selling well? Keep making oils instead (about 15)." }),
     Craft("e19", 299, 300, "Make a Runed Arcanite Rod", {
       Opt("A", "Runed Arcanite Rod", 1, { { "Arcanite Rod", 1 }, { "Golden Pearl", 1 }, { "Illusion Dust", 10 }, { "Greater Eternal Essence", 4 }, { "Small Brilliant Shard", 4 }, { "Large Brilliant Shard", 2 } }) },

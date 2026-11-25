@@ -8,6 +8,7 @@
 - The recipe list only draws what's on screen and no longer redraws on every bag change, so the window stays smooth.
 - Fixed: the resize corner could make the window jump to a huge size. The window now stays between its minimum size and your screen size, and a window saved too big shrinks back.
 - Resizing redraws the window at most 10 times a second, so dragging the corner stays smooth.
+- Proofread every guide: full sentences instead of fragments, proper plurals in material counts, and the same wording for the same advice across professions.
 - New `/fc mem` shows how much memory the addon uses.
 
 ## 0.6.1

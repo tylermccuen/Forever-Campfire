@@ -35,8 +35,8 @@ ns.LazyGuide({
   icon = "Interface\\Icons\\INV_Misc_Food_15",
 }, function()
 local TRAINERS = {
-  H = "Zamja (Orgrimmar), Eunice Burch (Undercity), Aska Mistrunner (Thunder Bluff), Cook Torka (Razor Hill), Pyall Silentstride (Bloodhoof Village), William Pickman (Brill inn), Nyalah Brightfire / Zerril Softbreeze (Zephras Isle)",
-  A = "Stephen Ryback (Stormwind), Daryl Riknussun (Ironforge), Alegorn (Darnassus), Tomas (Goldshire inn), Gremlock Pilsnor (Kharanos), Zarrin (Dolanaar), Nyalah Brightfire / Zerril Softbreeze (Zephras Isle)",
+  H = "Zamja (Orgrimmar), Eunice Burch (Undercity), Aska Mistrunner (Thunder Bluff), Cook Torka (Razor Hill), Pyall Silentstride (Bloodhoof Village), William Pickman (Brill inn), Nyalah Brightfire or Zerril Softbreeze (Zephras Isle)",
+  A = "Stephen Ryback (Stormwind), Daryl Riknussun (Ironforge), Alegorn (Darnassus), Tomas (Goldshire inn), Gremlock Pilsnor (Kharanos), Zarrin (Dolanaar), Nyalah Brightfire or Zerril Softbreeze (Zephras Isle)",
 }
 
 ns.RegisterGuide({
@@ -54,14 +54,14 @@ ns.RegisterGuide({
     { id = "learn", kind = "learn", title = "Learn Cooking",
       notes = {
         "Cooking doesn't use one of your two profession slots.",
-        "You also learn Basic Campfire Kit. Kits need Simple Wood and Flint and Tinder. The Flint and Tinder is only needed to craft kits, so it can stay in the bank.",
+        "You also learn Basic Campfire Kit. Kits need Simple Wood and Flint and Tinder. You only need the Flint and Tinder to craft kits, so it can stay in the bank.",
         { H = "Trainers: " .. TRAINERS.H, A = "Trainers: " .. TRAINERS.A },
       } },
 
     { id = "c1", kind = "level", from = 1, to = 50, title = "Cook starter fish",
       options = {
         { label = "A", recipe = "Brilliant Smallfish", product = 6290, count = 55, mats = { { 6291, 1 } },
-          recipeFrom = { H = "Sewa / Naal Mistrunner (Thunder Bluff), Lizbeth Cromwell / Ronald Burch (Undercity), Harn Longcast (Mulgore), Martine Tramblay (Tirisfal)",
+          recipeFrom = { H = "Sewa or Naal Mistrunner (Thunder Bluff), Lizbeth Cromwell or Ronald Burch (Undercity), Harn Longcast (Mulgore), Martine Tramblay (Tirisfal)",
                          A = "Catherine Leland (Stormwind), Tharynn Bouden (Elwynn), Gretta Ganter (Dun Morogh), Khara Deepwater (Loch Modan), Nyoma (Teldrassil)" } },
         { label = "B", recipe = "Slitherskin Mackerel", product = 787, count = 55, mats = { { 6303, 1 } },
           recipeFrom = { H = "Zansoa (Durotar), Martine Tramblay (Tirisfal)", A = "Tansy Puddlefizz (Ironforge), Nessa Shadowsong (Teldrassil), Kriggon Talsone (Westfall)" } },
@@ -87,7 +87,7 @@ ns.RegisterGuide({
           recipeFrom = { H = "Naal Mistrunner (Thunder Bluff), Ronald Burch (Undercity), Derak Nightfall (Hillsbrad), Kilxx (Ratchet)",
                          A = "Catherine Leland (Stormwind), Lindea Rabonne (Hillsbrad), Kilxx (Ratchet)" } },
       },
-      notes = { "Recipe is taught at Cooking 100." } },
+      notes = { "Your trainer teaches the recipe at Cooking 100." } },
 
     { id = "expert", kind = "train", max = 225, title = "Get the Expert Cookbook", requires = { skill = 125 },
       notes = {
@@ -119,7 +119,7 @@ ns.RegisterGuide({
       gather = {
         { id = 12207, count = 12, note = "Auction House, or Rocs in Tanaris" },
         { id = 7974,  count = 10, note = "Auction House, or Big-mouth Clams in Tanaris" },
-        { id = 8932,  count = 20, note = { H = "Innkeeper Abeqwa, Freewind Post", A = "Ben Trias (Stormwind) or Dwane Wertle (Dustwallow)" } },
+        { id = 8932,  count = 20, note = { H = "Innkeeper Abeqwa (Freewind Post)", A = "Ben Trias (Stormwind) or Dwane Wertle (Dustwallow)" } },
       },
       notes = {
         "Get all three items first.",

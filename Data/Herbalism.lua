@@ -31,7 +31,7 @@ ns.RegisterGuide({
   steps = {
     { id = "learn", kind = "learn", title = "Learn Herbalism",
       notes = {
-        "A capital city guard can mark the herbalist on your map.",
+        "A city guard can mark the Herbalism trainer on your map.",
         TRAINERS,
         "Zephras Isle: do the quest Harvesting Windstones in Thendal Village and pick Wild Harvest.",
         "Turn on Find Herbs in the Professions window. It turns off when you die, and you can't track minerals at the same time.",
@@ -66,7 +66,7 @@ ns.RegisterGuide({
       notes = {
         "Kingsblood from 125, Liferoot from 150.",
         "Hillsbrad Foothills: run the full loop so herbs have time to respawn.",
-        "Lowest-level safe area has mobs around level 14-15. The busier areas have more Kingsblood.",
+        "The lowest-level area has mobs around level 14-15. Busier areas have more Kingsblood.",
       } },
 
     { id = "h4", kind = "level", from = 170, to = 205, title = "Pick in Stranglethorn Vale or Arathi Highlands",
@@ -78,7 +78,7 @@ ns.RegisterGuide({
 
     { id = "h5", kind = "level", from = 205, to = 230, title = "Pick in Tanaris or Searing Gorge",
       catch = { { 8831, 0 }, { 4625, 0 } },
-      notes = { "Neither zone has a Herbalism trainer, so train Artisan before you go." } },
+      notes = { "Neither zone has a Herbalism trainer." } },
 
     { id = "h6", kind = "level", from = 230, to = 270, title = "Pick in The Hinterlands",
       catch = { { 8838, 0 }, { 8831, 0 }, { 8845, 0 }, { 13464, 0 } },

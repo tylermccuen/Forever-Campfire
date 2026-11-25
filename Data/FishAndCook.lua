@@ -22,7 +22,7 @@ ns.RegisterGuide({
     { id = "learnf", kind = "learn", skill = "fishing", title = "Learn Fishing",
       notes = {
         { H = "Best start: Mulgore. Everything is close together.", A = "Best start: Elwynn Forest. Everything is close together." },
-        { H = "Trainer: Uthan Stillwater, Stonebull Lake", A = "Trainer: Lee Brown, Crystal Lake (east of Goldshire)" },
+        { H = "Trainer: Uthan Stillwater (Stonebull Lake)", A = "Trainer: Lee Brown (Crystal Lake, east of Goldshire)" },
         { H = "Buy from Harn Longcast (Bloodhoof Village): Fishing Pole, Shiny Bauble, Recipe: Brilliant Smallfish, Recipe: Longjaw Mud Snapper",
           A = "Buy from Tharynn Bouden (Goldshire): Fishing Pole, Shiny Bauble, Recipe: Brilliant Smallfish, Recipe: Longjaw Mud Snapper" },
         { "Or Durotar: trainer Lau'Tiki south of Sen'jin. Zansoa sells gear and Recipe: Slitherskin Mackerel.", f = "Horde" },
@@ -110,23 +110,23 @@ ns.RegisterGuide({
     { id = "f225", kind = "level", skill = "fishing", from = 205, to = 225, title = "Fish Dustwallow Marsh", lure = 6530,
       notes = {
         { H = "Out of Nightcrawlers? Kilxx in Ratchet sells them.", A = "Out of Nightcrawlers? Helenia Olden in Dustwallow sells them." },
-        "Fish the swamp, not the ocean.", "Keep a Nightcrawler on your pole or fish escape.",
+        "Fish the swamp, not the ocean.", "Keep a Nightcrawler on your pole or the fish will escape.",
       } },
 
     { id = "fart", kind = "quest", skill = "fishing", quest = 6607, max = 300, title = "Artisan quest: Nat Pagle, Angler Extreme",
       requires = { level = 35, skill = 225 },
       gather = {
-        { id = 16969, count = 1, note = "Stranglethorn west coast (Savage Coast)" },
-        { id = 16968, count = 1, note = { H = "Desolace coast", A = "Desolace: northern coast tower" } },
-        { id = 16970, count = 1, note = "Swamp of Sorrows, Misty Reed Strand islands" },
-        { id = 16967, count = 1, note = { H = "Verdantis River, Feralas. Lure needed (Bright Bauble from Sheendra Tallgrass)", A = "Verdantis River, Feralas. Lure needed (Bright Bauble from Vivianna)" } },
+        { id = 16969, count = 1, note = "Stranglethorn Vale: the west coast (Savage Coast)" },
+        { id = 16968, count = 1, note = { H = "Desolace coast", A = "Desolace: the northern coast tower" } },
+        { id = 16970, count = 1, note = "Swamp of Sorrows: the Misty Reed Strand islands" },
+        { id = 16967, count = 1, note = { H = "Feralas: the Verdantis River. You need a lure (Bright Bauble from Sheendra Tallgrass)", A = "Feralas: the Verdantis River. You need a lure (Bright Bauble from Vivianna)" } },
       },
       notes = { "Quest giver: Nat Pagle in Tidefury Cove (Dustwallow Marsh).", "Only catching trout and catfish? Move to another spot." } },
 
     { id = "f255", kind = "level", skill = "fishing", from = 225, to = 255, title = "Keep fishing Dustwallow Marsh", lure = 6530,
       secondary = { cooking = 225 },
       catch = { { 8365, 0 } },
-      notes = { "Swamp water, not the ocean. The ocean gives Rockscale Cod instead of trout.",
+      notes = { "Fish the swamp water, not the ocean. The ocean gives Rockscale Cod instead of trout.",
                 { H = "Cook at Brackenwall Village or on a campfire.", A = "Cook at Theramore Isle or on a campfire." } } },
 
     { id = "c225", kind = "level", skill = "cooking", from = 175, to = 225, title = "Cook Mithril Headed Trout",
@@ -136,11 +136,11 @@ ns.RegisterGuide({
     { id = "cart", kind = "quest", skill = "cooking", quest = 6610, max = 300, title = "Artisan quest: Clamlette Surprise",
       requires = { level = 35, skill = 225 },
       gather = {
-        { id = 12207, count = 12, note = "Rocs, Fire Rocs, Searing Rocs in Tanaris" },
-        { id = 7974,  count = 10, note = "Big-mouth Clams from Steeljaw Snappers / Surf Gliders in Tanaris" },
+        { id = 12207, count = 12, note = "Rocs, Fire Rocs and Searing Rocs in Tanaris" },
+        { id = 7974,  count = 10, note = "Big-mouth Clams from Steeljaw Snappers and Surf Gliders in Tanaris" },
         { id = 8932,  count = 20, note = "bought earlier" },
       },
-      notes = { "Hand in to Dirge Quikcleave in Gadgetzan.", "Then buy Recipe: Nightfin Soup from Gikkix in Steamwheedle Port." },
+      notes = { "Hand them in to Dirge Quikcleave in Gadgetzan.", "Then buy Recipe: Nightfin Soup from Gikkix in Steamwheedle Port." },
       recipes = { "Recipe: Nightfin Soup" } },
 
     { id = "f300", kind = "level", skill = "fishing", from = 255, to = 300, title = "Fish Feralas", lure = 6532, nightfin = true,

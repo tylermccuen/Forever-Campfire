@@ -57,7 +57,7 @@ ns.RegisterGuide({
           notes = {
             { H = "Best zone: Durotar. Smelt at Razor Hill after one or two laps.", A = "Best zone: Elwynn Forest. Smelt in Goldshire after one lap." },
             { "Durotar has a cave with 5 Copper Veins that respawn very fast.", f = "Horde" },
-            { "Also good: Mulgore (forge at Bael'dun Digsite, hostile dwarves), Tirisfal Glades (smelt in Brill).", f = "Horde" },
+            { "Also good: Mulgore (forge at Bael'dun Digsite, watch for hostile dwarves) or Tirisfal Glades (smelt in Brill).", f = "Horde" },
             { "Also good: Dun Morogh (smelt in Kharanos; both caves respawn very fast).", f = "Alliance" },
             { "Teldrassil has no forge. The nearest is the Warrior's Terrace in Darnassus.", f = "Alliance" },
             "Zephras Isle (both factions): veins respawn very fast. Smelt at Shen'dar Village.",
@@ -85,7 +85,7 @@ ns.RegisterGuide({
           now = "Smelt Tin, then Bronze, then Silver. Details in the step below.",
           buy = { { id = 2771, count = 70 }, { id = 2775, count = 45 } },
           notes = {
-            "65-75: learn Smelt Tin and Smelt Bronze. Smelt all 70 Tin Bars, even after it turns grey at 75.",
+            "65-75: learn Smelt Tin and Smelt Bronze. Smelt all 70 Tin Bars, even after the recipe turns grey at 75.",
             "75-105: smelt 70 Bronze Bars from your Copper and Tin Bars. Buy extra if you stop short.",
             "105-120: learn Smelt Silver and smelt 35-45 Silver Bars.",
             "From 120, mine Iron instead. The last few Silver points are expensive.",
@@ -99,11 +99,11 @@ ns.RegisterGuide({
       catch = { { 2772, 0 }, { 2776, 0 } },
       notes = {
         "Iron Deposits from 125, Gold Veins from 155.",
-        "Around level 30: Thousand Needles is the safest.",
+        "Around level 30, Thousand Needles is the safest.",
         "Higher level or mounted: Arathi Highlands. Check the back of each cave.",
-        { "Low-level Alliance: go around Hammerfall to the south.", f = "Alliance" },
+        { "Low-level Alliance players: go around Hammerfall to the south.", f = "Alliance" },
         "Optional: smelt about 20 Iron Ore to 135 first.",
-        "At 155, learn Smelt Gold. About 22 Gold Ore takes you to 175, one point per bar until 170.",
+        "At 155, learn Smelt Gold. About 22 Gold Ore takes you to 175. Each bar gives a point until 170.",
       } },
 
     { id = "m4", kind = "level", from = 175, to = 225, title = "Mine Mithril",

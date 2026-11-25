@@ -49,19 +49,19 @@ ns.RegisterGuide({
       { "Green at 97. Short of 100? Move on to Silver Contacts." }),
     Craft("g7", 100, 105, "Make Silver Contacts", {
       Opt("A", "Silver Contact", 5, { { "Silver Bar", 1 } }),
-      Opt("B", "Flying Tiger Goggles", 5, { { "Light Leather", 6 }, { "Tigerseye", 2 } }, { notes = { "If Silver Bar is expensive." } }),
+      Opt("B", "Flying Tiger Goggles", 5, { { "Light Leather", 6 }, { "Tigerseye", 2 } }, { notes = { "Use this if Silver Bars are expensive." } }),
     }),
     Craft("g8", 105, 125, "Make Bronze Tubes", { Opt("A", "Bronze Tube", 25, { { "Bronze Bar", 2 }, { "Weak Flux", 1 } }) },
       { "Keep 10 for scopes. Weak Flux: the Engineering Supply vendor by your trainer." }),
     Craft("g9", 125, 135, "Make Standard Scopes", {
       Opt("A", "Standard Scope", 10, { { "Bronze Tube", 1 }, { "Moss Agate", 1 } }),
-      Opt("B", "Heavy Blasting Powder", 10, { { "Heavy Stone", 1 } }, { notes = { "No Moss Agate, or too expensive." } }),
+      Opt("B", "Heavy Blasting Powder", 10, { { "Heavy Stone", 1 } }, { notes = { "Use this if you have no Moss Agate or it's expensive." } }),
     }),
     Craft("g10", 135, 150, "Heavy Blasting Powder, then Gizmos", {
       Opt("A", "Heavy Blasting Powder and Whirring Bronze Gizmo", nil, nil, {
-        product = false, verb = "Make", now = "Make 40 Heavy Blasting Powder, then 15 Whirring Bronze Gizmos (2 Bronze Bar, 1 Wool Cloth each).",
+        product = false, verb = "Make", now = "Make 40 Heavy Blasting Powder, then 15 Whirring Bronze Gizmos (2 Bronze Bars and 1 Wool Cloth each).",
         buy = { { id = "Heavy Stone", count = 40 }, { id = "Bronze Bar", count = 30 }, { id = "Wool Cloth", count = 15 } },
-        notes = { "In this order. Keep 30 powder and all gizmos for the sheep at 160, and 10 powder for grenades at 190." } }),
+        notes = { "Make them in this order. Keep 30 powder and all gizmos for the sheep at 160, and 10 powder for grenades at 190." } }),
     }),
     Train("exp", 225, "Train Expert Engineering", 125, 20, { { H = "Roxxik in Orgrimmar (50 silver).", A = "Springspindle Fizzlegear in Ironforge (50 silver)." } }),
     Craft("g11", 150, 160, "Make Bronze Frameworks", { Opt("A", "Bronze Framework", 15, { { "Bronze Bar", 2 }, { "Medium Leather", 1 }, { "Wool Cloth", 1 } }) },
@@ -71,14 +71,14 @@ ns.RegisterGuide({
     Craft("g13", 175, 190, "Make Solid Blasting Powder", { Opt("A", "Solid Blasting Powder", 31, { { "Solid Stone", 2 } }) }, { "Keep it all." }),
     Craft("g14", 190, 195, "Micro-Adjustor, then Iron Grenades", {
       Opt("A", "Gyromatic Micro-Adjustor and Iron Grenade", nil, nil, {
-        product = false, verb = "Make", now = "Make 1 Gyromatic Micro-Adjustor (4 Steel Bar), then Iron Grenades until 195.",
+        product = false, verb = "Make", now = "Make 1 Gyromatic Micro-Adjustor (4 Steel Bars), then Iron Grenades until 195.",
         buy = { { id = "Steel Bar", count = 4 }, { id = "Iron Bar", count = 10 }, { id = "Heavy Blasting Powder", count = 10 }, { id = "Silk Cloth", count = 10 } },
         notes = { "Keep the Micro-Adjustor: later recipes need it." } }),
     }),
     Craft("g15", 195, 200, "Make Mithril Tubes", { Opt("A", "Mithril Tube", 6, { { "Mithril Bar", 3 } }) },
       { "Keep all 6: Gnomish Engineering may need them.", "At 200 and level 30 you can pick Gnomish or Goblin Engineering." }),
     Train("art", 300, "Train Artisan Engineering", 200, 35,
-      { "Buzzek Bracketswing in Gadgetzan, by the mailbox outside the inn. Or Kaylaena Springwhisper in Mount Hyjal.", "Go as soon as you hit 200: he teaches the recipes from here on." }),
+      { "Buzzek Bracketswing in Gadgetzan, by the mailbox outside the inn. Or Kaylaena Springwhisper in Mount Hyjal.", "Go as soon as you hit 200: the Artisan trainer teaches the recipes from here on." }),
     Craft("g16", 200, 215, "Make Unstable Triggers", { Opt("A", "Unstable Trigger", 21, { { "Mithril Bar", 1 }, { "Mageweave Cloth", 1 }, { "Solid Blasting Powder", 1 } }) },
       { "Keep 20 for bombs at 238." }),
     Craft("g17", 215, 238, "Make Mithril Casings", { Opt("A", "Mithril Casing", 40, { { "Mithril Bar", 3 } }) },
@@ -91,8 +91,8 @@ ns.RegisterGuide({
       { recipes = { "Schematic: Thorium Widget", "Schematic: Thorium Grenade" } }),
     Craft("g21", 280, 300, "Make Thorium Tubes", { Opt("A", "Thorium Tube", 21, { { "Thorium Bar", 6 } }) },
       { "Schematic from Xizzer Fizzbolt in Everlook (Winterspring) or Kor'gar in Riverglades. Binds when picked up.",
-        "Yellow from 295: make a few extra if you fall short.",
-        "Have Thorium Shells? 5 tubes to 285, then 15 Thorium Shells, then 12 tubes." },
+        "Yellow from 295. Make a few extra if you fall short.",
+        "Have the Thorium Shells schematic? Make 5 tubes to 285, then 15 Thorium Shells, then 12 more tubes." },
       { recipes = { "Schematic: Thorium Tube" } }),
   },
 })

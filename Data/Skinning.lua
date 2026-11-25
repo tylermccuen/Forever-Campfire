@@ -47,20 +47,20 @@ ns.RegisterGuide({
       } },
 
     { id = "jm", kind = "train", max = 150, title = "Train Journeyman Skinning", requires = { skill = 50 },
-      notes = { "Junior trainers in starting areas can't teach it. Use a main trainer.", TRAINERS } },
+      notes = { "Starting-zone trainers only teach up to 75. Use a main trainer.", TRAINERS } },
 
     { id = "s2", kind = "level", from = 75, to = 130, title = "Skin in The Barrens or Loch Modan",
       catch = { { 2318, 0 }, { 2319, 0 } },
       options = {
         { label = "A", name = "The Barrens", recipe = "The Barrens",
           notes = {
-            "West of Northwatch Hold. Sunscale Scytheclaw, Zhevra Charger, Ornery Plainstrider.",
-            "Level 16-17 mobs until 80, then level 18 too.",
+            "West of Northwatch Hold: Sunscale Scytheclaw, Zhevra Charger and Ornery Plainstrider.",
+            "Kill level 16-17 mobs until 80, then add level 18 ones.",
             "You can stay here all the way to 150. The last 10 points are green, but respawns are fast.",
           } },
         { label = "B", name = "Loch Modan", recipe = "Loch Modan",
           notes = {
-            "Elder Mountain Boar, Black Bear Patriarch, Loch Crocolisk (level 16-17).",
+            "Elder Mountain Boar, Black Bear Patriarch and Loch Crocolisk (level 16-17).",
             "Loch Crocolisks are skinnable. Pull them when you reach the shore.",
             "Stay until 130: most Wetlands raptors need 130.",
           } },
@@ -68,10 +68,10 @@ ns.RegisterGuide({
 
     { id = "s3", kind = "level", from = 130, to = 150, title = "Skin Wetlands raptors",
       catch = { { 2319, 0 } },
-      notes = { "Mottled Scytheclaw and Mottled Razormaw (level 25-27).", "Go to Whelgar's Excavation Site. A few are always there." } },
+      notes = { "Mottled Scytheclaws and Mottled Razormaws (level 25-27).", "Go to Whelgar's Excavation Site. A few are always there." } },
 
     { id = "exp", kind = "train", max = 225, title = "Train Expert Skinning", requires = { skill = 125 },
-      notes = { "Learn it before 150.", TRAINERS } },
+      notes = { "Train it before you reach 150.", TRAINERS } },
 
     { id = "s4", kind = "level", from = 150, to = 225, title = "Skin Hillsbrad yetis or Duskwood worgen",
       catch = { { 2319, 0 }, { 4234, 0 } },
@@ -79,25 +79,25 @@ ns.RegisterGuide({
         { label = "A", name = "Hillsbrad Foothills", recipe = "Hillsbrad Foothills",
           notes = {
             { H = "Ride from Tarren Mill to the front of the yeti cave.", A = "Ride from Southshore to the front of the yeti cave." },
-            "150-160: Vicious Gray Bear and Starving Mountain Lion outside (level 22-24).",
-            "160-225: Cave Yeti and Ferocious Yeti inside Foothill Caverns (level 30-32). They respawn fast, so you can stay inside.",
+            "150-160: Vicious Gray Bears and Starving Mountain Lions outside (level 22-24).",
+            "160-225: Cave Yetis and Ferocious Yetis inside Foothill Caverns (level 30-32). They respawn fast, so you can stay inside.",
           } },
         { label = "B", name = "Duskwood", recipe = "Duskwood",
           notes = {
-            { H = "Reach Duskwood from Grom'gol.", A = "Duskwood, Rotting Orchard." },
-            "Nightbane Worgen, Shadow Weaver and Dark Runner (level 26-29).",
+            { H = "Reach Duskwood from Grom'gol.", A = "Duskwood: the Rotting Orchard." },
+            "Nightbane Worgen, Shadow Weavers and Dark Runners (level 26-29).",
             "Clear outside and inside Roland's Doom, then the Rotting Orchard while they respawn.",
           } },
       } },
 
     { id = "art", kind = "train", max = 300, title = "Train Artisan Skinning", requires = { skill = 200 },
-      notes = { "Learn it before 225.", TRAINERS } },
+      notes = { "Train it before you reach 225.", TRAINERS } },
 
     { id = "s5", kind = "level", from = 225, to = 280, title = "Skin yetis in Feralas",
       catch = { { 4304, 0 } },
       notes = {
         { H = "Fly to Camp Mojache, then ride to Feral Scar Vale in southern Feralas.", A = "Fly to Feathermoon Stronghold, then ride to Feral Scar Vale in southern Feralas." },
-        "Feral Scar Yeti, Enraged Feral Scar, Hulking Feral Scar (level 43-46).",
+        "Feral Scar Yetis, Enraged Feral Scars and Hulking Feral Scars (level 43-46).",
         "Hulking Feral Scars need 230.",
       } },
 
@@ -105,7 +105,7 @@ ns.RegisterGuide({
       catch = { { 4304, 0 }, { 8170, 0 } },
       notes = {
         "Fly to Marshal's Refuge and skin the dinosaurs in western Un'Goro.",
-        "Diemetradon, Pterrordax, Elder Diemetradon, Frenzied Pterrordax (level 50-55).",
+        "Diemetradons, Pterrordaxes, Elder Diemetradons and Frenzied Pterrordaxes (level 50-55).",
       } },
   },
 })

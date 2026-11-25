@@ -13,8 +13,8 @@ ns.LazyGuide({
   icon = "Interface\\Icons\\Trade_Fishing",
 }, function()
 local TRAINERS = {
-  H = "Lumak (Orgrimmar), Armand Cromwell (Undercity), Kah Mistrunner (Thunder Bluff), Lau'Tiki (Sen'jin Village coast), Uthan Stillwater (Stonebull Lake, Mulgore), Clyde Kellen (Brightwater Lake, Tirisfal), Baelann Swiftcurrent / Fenn Fairweather (Zephras Isle)",
-  A = "Arnold Leland (Stormwind), Grimnur Stonebrand (Ironforge), Astaia (Darnassus), Lee Brown (Crystal Lake, Elwynn), Paxton Ganter (Iceflow Lake, Dun Morogh), Androl Oakhand (Rut'theran Village), Baelann Swiftcurrent / Fenn Fairweather (Zephras Isle)",
+  H = "Lumak (Orgrimmar), Armand Cromwell (Undercity), Kah Mistrunner (Thunder Bluff), Lau'Tiki (Sen'jin Village coast), Uthan Stillwater (Stonebull Lake, Mulgore), Clyde Kellen (Brightwater Lake, Tirisfal), Baelann Swiftcurrent or Fenn Fairweather (Zephras Isle)",
+  A = "Arnold Leland (Stormwind), Grimnur Stonebrand (Ironforge), Astaia (Darnassus), Lee Brown (Crystal Lake, Elwynn), Paxton Ganter (Iceflow Lake, Dun Morogh), Androl Oakhand (Rut'theran Village), Baelann Swiftcurrent or Fenn Fairweather (Zephras Isle)",
 }
 local SUPPLY = {
   H = "Zansoa (Sen'jin), Wunna Darkmane (Bloodhoof), Martine Tramblay (Death's Watch, Tirisfal), Shankys (Orgrimmar), Lizbeth Cromwell (Undercity), Sewa Mistrunner (Thunder Bluff), Wik'Tar (Zoram'gar, Ashenvale), Katoom the Angler (Revantusk)",
@@ -34,7 +34,7 @@ ns.RegisterGuide({
       notes = {
         "No level requirement. A city guard can mark the trainer on your map.",
         { H = "Trainers: " .. TRAINERS.H, A = "Trainers: " .. TRAINERS.A },
-        { H = "Fishing Pole + Shiny Bauble: " .. SUPPLY.H, A = "Fishing Pole + Shiny Bauble: " .. SUPPLY.A },
+        { H = "Fishing Pole and Shiny Bauble: " .. SUPPLY.H, A = "Fishing Pole and Shiny Bauble: " .. SUPPLY.A },
         "Open Professions, click the hammer button (not the Fishing tab) and drag Fishing to your action bar.",
         "Cast, then right-click the bobber when it splashes.",
       },
@@ -74,10 +74,10 @@ ns.RegisterGuide({
     { id = "artisan", kind = "quest", quest = 6607, max = 300, title = "Artisan quest: Nat Pagle, Angler Extreme",
       requires = { level = 35, skill = 225 },
       gather = {
-        { id = 16969, count = 1, note = "Stranglethorn Vale, west coast. Away from Grom'gol." },
-        { id = 16968, count = 1, note = { H = "Desolace coast near Shadowprey Village", A = "Desolace: water around the northern coast tower" } },
-        { id = 16970, count = 1, note = "Swamp of Sorrows, Misty Reed Strand (fish from the small islands)" },
-        { id = 16967, count = 1, note = "Feralas, Verdantis River just west of the road bridge. Use a lure." },
+        { id = 16969, count = 1, note = "Stranglethorn Vale: the west coast, away from Grom'gol." },
+        { id = 16968, count = 1, note = { H = "Desolace coast near Shadowprey Village", A = "Desolace: the water around the northern coast tower" } },
+        { id = 16970, count = 1, note = "Swamp of Sorrows: Misty Reed Strand (fish from the small islands)" },
+        { id = 16967, count = 1, note = "Feralas: the Verdantis River, just west of the road bridge. Use a lure." },
       },
       notes = { "Quest giver: Nat Pagle, Tidefury Cove, Dustwallow Marsh.", "Only catching trout and catfish? Move to another spot." } },
 
