@@ -11,8 +11,18 @@ local HIDE_AFTER = 5    -- seconds after the last craft
 local lastCast, pos, dir, speed, zoneX = 0, 0, 1, 140, 90
 local score, combo, cooldown = 0, 0, 0
 
+-- Whether a profession window is open. The open/close events work on every
+-- client; the frame names differ between clients, so they're only a fallback.
+local tradeOpen = false
+local function shown(frame) return frame and frame.IsShown and frame:IsShown() end
 local function professionWindowOpen()
-  return (ProfessionsFrame and ProfessionsFrame:IsShown()) or (TradeSkillFrame and TradeSkillFrame:IsShown())
+  return tradeOpen or shown(ProfessionsFrame) or shown(TradeSkillFrame) or shown(CraftFrame)
+end
+
+local function spellName(id)
+  if not id then return nil end
+  if C_Spell and C_Spell.GetSpellName then return C_Spell.GetSpellName(id) end
+  if GetSpellInfo then return (GetSpellInfo(id)) end
 end
 
 local function newZone()
@@ -113,8 +123,10 @@ local function build()
   g:Hide()
 end
 
-local function onCast(unit)
+local function onCast(unit, spellID)
   if unit ~= "player" or not ns.db.minigame then return end
+  local name = spellName(spellID)
+  if name and (name == "Fishing" or name:find("Fishing", 1, true)) then return end
   if InCombatLockdown and InCombatLockdown() then return end
   if not professionWindowOpen() then return end
   if not g then build() end
@@ -124,11 +136,19 @@ end
 
 function ns.InitMiniGame()
   ev = CreateFrame("Frame")
-  pcall(ev.RegisterEvent, ev, "UNIT_SPELLCAST_START")
-  pcall(ev.RegisterEvent, ev, "PLAYER_REGEN_DISABLED")
-  ev:SetScript("OnEvent", function(_, event, unit)
+  ns.miniGameEvents = ev   -- for the offline test
+  for _, e in ipairs({ "UNIT_SPELLCAST_START", "UNIT_SPELLCAST_SUCCEEDED", "PLAYER_REGEN_DISABLED",
+                       "TRADE_SKILL_SHOW", "TRADE_SKILL_CLOSE", "CRAFT_SHOW", "CRAFT_CLOSE" }) do
+    pcall(ev.RegisterEvent, ev, e)
+  end
+  ev:SetScript("OnEvent", function(_, event, unit, a2, a3)
     if event == "PLAYER_REGEN_DISABLED" then if g then g:Hide() end return end
-    onCast(unit)
+    if event == "TRADE_SKILL_SHOW" or event == "CRAFT_SHOW" then tradeOpen = true; return end
+    if event == "TRADE_SKILL_CLOSE" or event == "CRAFT_CLOSE" then tradeOpen = false; return end
+    -- cast events: (unit, castGUID, spellID) on newer clients, (unit, spellName, rank, ...) on older ones
+    local spellID = (type(a3) == "number") and a3 or nil
+    -- instant crafts only fire SUCCEEDED; crafts with a cast bar fire both, which is fine
+    onCast(unit, spellID)
   end)
 end
 
@@ -138,3 +158,7 @@ function ns.ShowMiniGame()
   lastCast = GetTime() + 25
   g:Show()
 end
+
+-- for the offline test
+function ns.MiniGameShown() return g ~= nil and g:IsShown() end
+function ns.HideMiniGame() if g then g:Hide() end end

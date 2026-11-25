@@ -394,6 +394,24 @@ check(campProfs == 12, "camp items for all 12 professions")
 ns.ShowMain("camp"); ns.ShowMain("both"); ns.views.both = "recipes"; ns.UpdateMain(); ns.views.both = "route"
 check(true, "Camp tab and Recipes view open without errors")
 do
+  local ev = ns.miniGameEvents
+  local fire = ev.scripts.OnEvent
+  ns.db.minigame = true
+  ns.HideMiniGame()
+  fire(ev, "UNIT_SPELLCAST_START", "player", "guid", 2545)
+  check(not ns.MiniGameShown(), "Sizzle! stays hidden for casts with no profession window open")
+  fire(ev, "TRADE_SKILL_SHOW")
+  fire(ev, "UNIT_SPELLCAST_SUCCEEDED", "player", "guid", 2545)
+  check(ns.MiniGameShown(), "Sizzle! opens on a craft while a profession window is open")
+  ns.HideMiniGame()
+  local oldName = C_Spell
+  C_Spell = { GetSpellName = function(id) return id == 7620 and "Fishing" or "Cooking" end }
+  fire(ev, "UNIT_SPELLCAST_START", "player", "guid", 7620)
+  check(not ns.MiniGameShown(), "Sizzle! never opens for Fishing")
+  C_Spell = oldName
+  fire(ev, "TRADE_SKILL_CLOSE")
+end
+do
   local bw, bh = ns.MainSizeLimits(5000, 5000)
   local sw, sh = ns.MainSizeLimits(10, 10)
   check(bw <= 1500 and bh <= 1200 and sw == 820 and sh == 520, "window size is kept between 820x520 and the screen size")
