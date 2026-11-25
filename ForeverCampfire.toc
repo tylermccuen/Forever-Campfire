@@ -2,7 +2,7 @@
 ## Title: Forever Campfire
 ## Notes: Step-by-step leveling guide for every WoW Forever profession that follows your skill as you level.
 ## Author: tylermccuen
-## X-Curse-Project-ID: 000000
+## X-Curse-Project-ID: 1829692
 ## Version: @project-version@
 ## IconTexture: Interface\Icons\Spell_Fire_Fire
 ## SavedVariables: ForeverCampfireDB
