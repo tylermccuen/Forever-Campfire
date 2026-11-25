@@ -48,13 +48,23 @@ function ns.StepBody(step)
     add(hdr)
     if opt.recipeFrom then addList(add, "Recipe from", ns.FText(opt.recipeFrom))
     elseif opt.product then add(ns.LearnLine(step.skill, opt.recipe)) end
-    if opt.mats and state ~= "done" then
+    if opt.mats and state == "done" then
+      -- finished steps still list what the recipe takes, so you can plan ahead
+      add(C.gold .. "Materials per craft:" .. C.r)
+      for _, m in ipairs(opt.mats) do
+        local line = "   " .. ns.IconText(m[1]) .. "  " .. ns.ItemName(m[1]) .. "  " .. C.white .. "x" .. m[2] .. C.r
+        if opt.count and opt.count > 1 then line = line .. C.grey .. "  (" .. (opt.count * m[2]) .. " for the whole step)" .. C.r end
+        add(line)
+      end
+    elseif opt.mats then
       local needs = ns.OptionNeeds(step, opt)
       for k, n in ipairs(needs) do
         if not opt.count and k > 1 then
           add("   " .. ns.IconText(n.id) .. "  " .. ns.ItemName(n.id) .. ": " .. C.white .. ns.Count(n.id) .. C.r .. " in bags (one per craft)")
         elseif opt.count then
-          add("   " .. ns.IconText(n.id) .. "  " .. ns.ItemName(n.id) .. "  " .. ns.Have(n.id, n.need))
+          local per = opt.mats[k] and opt.mats[k][2]
+          add("   " .. ns.IconText(n.id) .. "  " .. ns.ItemName(n.id) .. "  " .. ns.Have(n.id, n.need)
+            .. (per and (C.grey .. "  (" .. per .. " per craft)" .. C.r) or ""))
         else
           add("   " .. ns.IconText(n.id) .. "  " .. ns.ItemName(n.id) .. ": " .. C.white .. ns.Count(n.id) .. C.r .. " in bags. Cook them all.")
         end
