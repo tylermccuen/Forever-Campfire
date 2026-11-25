@@ -64,12 +64,14 @@ local function row(cv, x, y, w, h)
     r.title = r:CreateFontString(nil, "OVERLAY", "GameFontNormal"); r.title:SetPoint("TOPLEFT", r.icon, "TOPRIGHT", 8, 1); r.title:SetJustifyH("LEFT"); r.title:SetWordWrap(false)
     r.right = r:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall"); r.right:SetPoint("TOPRIGHT", -10, -10)
     r.sub = r:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall"); r.sub:SetPoint("TOPLEFT", r.title, "BOTTOMLEFT", 0, -3); r.sub:SetJustifyH("LEFT"); r.sub:SetWordWrap(false)
+    r.src = r:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall"); r.src:SetPoint("TOPLEFT", r.sub, "BOTTOMLEFT", 0, -3); r.src:SetJustifyH("LEFT"); r.src:SetWordWrap(false)
     r:SetScript("OnClick", function(self) if self.info then ns.ShowInfo(self.info) end end)
     return r
   end)
   b:ClearAllPoints(); b:SetPoint("TOPLEFT", cv.content, "TOPLEFT", x, -y)
   b:SetSize(w, h)
-  b.title:SetWidth(w - 90); b.sub:SetWidth(w - 40)
+  b.title:SetWidth(w - 90); b.sub:SetWidth(w - 40); b.src:SetWidth(w - 40)
+  b.title:SetWordWrap(false); b.src:SetText(""); b.src:SetWordWrap(false)
   return b
 end
 
@@ -178,6 +180,7 @@ local campCv
 local function campState(skillKey, item, sk)
   local known = ns.KnowsRecipe(skillKey, item.name)
   if known then return "have" end
+  if skillKey == "cooking" and item.tier == 1 and sk.known then return "have" end   -- comes with Cooking
   if sk.known and sk.rank >= item.skill then return "ready" end
   return "locked"
 end
@@ -186,18 +189,38 @@ local function campInfo(profName, skillKey, item, state, sk)
   local status = (state == "have" and (C.green .. "You can make this." .. C.r))
     or (state == "ready" and (C.gold .. "Your skill is high enough: get the plan." .. C.r))
     or (C.grey .. "Needs " .. profName .. " " .. item.skill .. (sk.known and (" (you have " .. sk.rank .. ")") or "") .. "." .. C.r)
-  local body = { C.gold .. "Effect: " .. C.r .. item.effect, C.gold .. "How to learn: " .. C.r .. item.learn, " ", C.gold .. "Materials:" .. C.r }
+  local body = { C.gold .. "Where: " .. C.r .. ns.CampShortSource(item.learn), C.grey .. item.learn .. C.r, C.gold .. "Effect: " .. C.r .. item.effect, " ", C.gold .. "Materials:" .. C.r }
   for _, l in ipairs(matsLines(item.mats)) do table.insert(body, l) end
   if item.station then table.insert(body, " "); table.insert(body, C.blue .. "Crafting station. Anyone at the camp can use it, and it sells on the Auction House." .. C.r) end
   if item.tier > 1 then table.insert(body, C.grey .. "Replaces the tier " .. (item.tier - 1) .. " item." .. C.r) end
   return { label = string.upper(profName) .. " · TIER " .. item.tier, title = item.name, now = status, body = table.concat(body, "\n") }
 end
 
+-- Where an item comes from, short enough for a tile: "Drop: Cookie (The Deadmines)".
+function ns.CampShortSource(learn)
+  if learn:find("not known yet") then return "Drop: not known yet" end
+  local who = learn:match("^Blueprint from (.+)$") or learn:match(", from (.+)$")
+  if who then return "Drop: " .. who end
+  if learn:find("Camping 101") then return "Trainer or Camping 101" end
+  return learn
+end
+
+-- Two short lines for a tile: "Drop: Cookie" / "The Deadmines".
+local function tileSource(learn)
+  local s = ns.CampShortSource(learn)
+  local who = s:match("^Drop: (.+)$")
+  if not who or who == "not known yet" then return s end
+  local boss, place, rest = who:match("^(.-) %((.-)%)(.*)$")
+  if not boss then return s end
+  if rest and rest:find("%S") then place = place .. ", or another" end
+  return "Drop: " .. boss .. "\n" .. place
+end
+
 local function tierRow(cv, y, W, profName, skillKey, items)
   local sk = ns.Skill(skillKey)
-  local gap = 26
+  local gap = 22
   local tw = math.floor((W - 16 - 2 * gap) / 3)
-  local h = 62
+  local h = 96
   -- which one is next: the first tier you don't have yet
   local nextIdx
   for i, it in ipairs(items) do if campState(skillKey, it, sk) ~= "have" then nextIdx = i; break end end
@@ -214,11 +237,17 @@ local function tierRow(cv, y, W, profName, skillKey, items)
     if state == "locked" and i ~= nextIdx then style = GREY end
     paint(b, style.bg, style.edge)
     b.icon:SetTexture(state == "have" and "Interface\\RaidFrame\\ReadyCheck-Ready" or (state == "ready" and "Interface\\RaidFrame\\ReadyCheck-Waiting" or "Interface\\LFGFrame\\UI-LFG-ICON-LOCK"))
-    b.title:SetText(it.name); b.title:SetWidth(tw - 40)
+    b.title:SetText(it.name:gsub(" Kit$", "")); b.title:SetWidth(tw - 38)
+    b.title:SetWordWrap(true)
+    if b.title.SetMaxLines then b.title:SetMaxLines(2) end
     b.title:SetTextColor(style.title[1], style.title[2], style.title[3])
     b.right:SetText("")
     b.sub:SetText("T" .. it.tier .. " · skill " .. it.skill .. ((state == "have") and " · have" or ((state == "ready") and " · get it" or "")))
     b.sub:SetWidth(tw - 20)
+    b.src:SetText((state == "have") and "" or (C.grey .. tileSource(it.learn) .. C.r))
+    b.src:SetWidth(tw - 20)
+    b.src:SetWordWrap(true)
+    if b.src.SetMaxLines then b.src:SetMaxLines(2) end
     b.info = campInfo(profName, skillKey, it, state, sk)
   end
   return y + h

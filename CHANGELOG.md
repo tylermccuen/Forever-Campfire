@@ -1,6 +1,6 @@
 # Forever Profession Guide
 
-## 0.6.0
+## 0.6.1
 
 First public release.
 
@@ -8,7 +8,7 @@ First public release.
 - Skill tree layout: the rank you're in opens as a tree, recipe choices fork into options, finished and future ranks fold away.
 - Reads your skill and shows what to do now, how many crafts are left and which materials you're short.
 - Tabs only for the professions your character knows. A welcome screen for new characters.
-- Camp tab: campfire upgrades and every profession's camp items from tier 1 to tier 3, with materials and where each Blueprint drops.
+- Camp tab: campfire upgrades and every profession's camp items from tier 1 to tier 3, showing which boss drops each Blueprint right on the tile, plus materials.
 - Cooking recipe collection: every learnable recipe, which ones you know, and where to get the rest.
 - Map pins for Fishing and Cooking trainers, vendors and fishing spots, with click-to-waypoint (TomTom supported).
 - Catch Log: counts your fish, fish per skill point, streaks and milestones.

@@ -127,7 +127,7 @@ local function updateBars()
   treePanel:SetWidth(math.floor((f:GetWidth() - 42) * 0.58))
 
   -- Route / Recipes switch for guides with a collection
-  local col = (selected ~= "camp") and collectionFor(selected)
+  local col = (selected ~= "camp") and collectionFor(selected) or nil
   viewBar:SetShown(col ~= nil)
   treeScroll:ClearAllPoints()
   treeScroll:SetPoint("TOPLEFT", treePanel, "TOPLEFT", 6, col and -36 or -6)
