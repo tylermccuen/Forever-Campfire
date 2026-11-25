@@ -1,0 +1,43 @@
+## Interface: 16001
+## Title: Forever Profession Guide
+## Notes: Step-by-step leveling guide for every WoW Forever profession that follows your skill as you level.
+## Author: tylermccuen
+## X-Curse-Project-ID: 000000
+## Version: @project-version@
+## IconTexture: Interface\Icons\INV_Misc_Fish_02
+## SavedVariables: ForeverProfGuideDB
+## SavedVariablesPerCharacter: ForeverProfGuideCharDB
+## AddonCompartmentFunc: ForeverProfGuide_OnCompartmentClick
+## AddonCompartmentFuncOnEnter: ForeverProfGuide_OnCompartmentEnter
+## AddonCompartmentFuncOnLeave: ForeverProfGuide_OnCompartmentLeave
+
+Core.lua
+Data\Items.lua
+Data\Cooking.lua
+Data\Fishing.lua
+Data\FishAndCook.lua
+Data\Mining.lua
+Data\Herbalism.lua
+Data\Skinning.lua
+Data\FirstAid.lua
+Data\Alchemy.lua
+Data\Blacksmithing.lua
+Data\Enchanting.lua
+Data\Engineering.lua
+Data\Leatherworking.lua
+Data\Tailoring.lua
+Data\MapPins.lua
+Data\CookingRecipes.lua
+Data\Camp.lua
+Engine.lua
+Catch.lua
+Collection.lua
+UI\StepText.lua
+UI\Tree.lua
+UI\Lists.lua
+UI\Main.lua
+UI\Tracker.lua
+UI\Minimap.lua
+UI\MiniGame.lua
+UI\MapPins.lua
+Hooks.lua
