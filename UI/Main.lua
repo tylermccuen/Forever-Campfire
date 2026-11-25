@@ -11,6 +11,8 @@ local BACKDROP = {
 }
 ns.BACKDROP = BACKDROP
 
+local clampSize, setBounds, startSizing, stopSizing
+ns.MainSizeLimits = function(w, h) return clampSize(w, h) end   -- for the offline test
 local f, tabs, bars, treePanel, treeScroll, treeContent, listContent, viewBar, detail, shop, welcome
 local selected
 local lastGuideShown
@@ -50,6 +52,62 @@ end
 local function savePos(frame, key)
   local p, _, rp, x, y = frame:GetPoint()
   ns.db[key] = { p, rp, x, y }
+end
+
+-- Window size limits: never bigger than the screen, never too small for the layout.
+local MIN_W, MIN_H, MAX_W, MAX_H = 820, 520, 1500, 1200
+local function maxSize()
+  local sw = (UIParent.GetWidth and UIParent:GetWidth()) or MAX_W
+  local sh = (UIParent.GetHeight and UIParent:GetHeight()) or MAX_H
+  return math.max(MIN_W, math.min(MAX_W, sw - 40)), math.max(MIN_H, math.min(MAX_H, sh - 110))
+end
+clampSize = function(w, h)
+  local mw, mh = maxSize()
+  return math.floor(math.max(MIN_W, math.min(mw, w or 1000))), math.floor(math.max(MIN_H, math.min(mh, h or 680)))
+end
+setBounds = function(frame)
+  local mw, mh = maxSize()
+  if frame.SetResizeBounds then frame:SetResizeBounds(MIN_W, MIN_H, mw, mh)
+  else
+    if frame.SetMinResize then frame:SetMinResize(MIN_W, MIN_H) end
+    if frame.SetMaxResize then frame:SetMaxResize(mw, mh) end
+  end
+end
+
+-- Resizing from the corner. The window is pinned by its top-left corner first:
+-- sizing a window that's anchored by its center makes it grow on both sides at
+-- once, which is what made it jump to a huge size.
+startSizing = function()
+  if f.sizing then return end
+  local left, top = f:GetLeft(), f:GetTop()
+  if left and top then
+    f:ClearAllPoints()
+    f:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
+  end
+  setBounds(f)
+  f.sizing, f.sizeDirty, f.sizeClock = true, false, 0
+  f:StartSizing("BOTTOMRIGHT")
+  -- if the mouse-up is missed (released off the window), stop anyway
+  f:SetScript("OnUpdate", function(self, elapsed)
+    if IsMouseButtonDown and not IsMouseButtonDown("LeftButton") then stopSizing(); return end
+    self.sizeClock = self.sizeClock + (elapsed or 0)
+    if self.sizeDirty and self.sizeClock > 0.1 then
+      self.sizeDirty, self.sizeClock = false, 0
+      ns.UpdateMain()
+    end
+  end)
+end
+
+stopSizing = function()
+  if not f.sizing then return end
+  f.sizing = false
+  f:SetScript("OnUpdate", nil)
+  f:StopMovingOrSizing()
+  local w, h = clampSize(f:GetWidth(), f:GetHeight())
+  if math.abs(w - f:GetWidth()) > 1 or math.abs(h - f:GetHeight()) > 1 then f:SetSize(w, h) end
+  ns.db.mainSize2 = { w, h }
+  savePos(f, "mainPos")
+  ns.UpdateMain()
 end
 
 local function makeBar(parent)
@@ -387,18 +445,23 @@ local function build()
   f:SetBackdrop({ bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
                   tile = true, tileSize = 32, edgeSize = 24, insets = { left = 6, right = 6, top = 6, bottom = 6 } })
   local sz = ns.db.mainSize2
-  f:SetSize(sz and sz[1] or 1000, sz and sz[2] or 680)
+  f:SetSize(clampSize(sz and sz[1] or 1000, sz and sz[2] or 680))
   f:SetFrameStrata("HIGH")
   local pos = ns.db.mainPos
   if pos then f:SetPoint(pos[1], UIParent, pos[2], pos[3], pos[4]) else f:SetPoint("CENTER") end
   f:SetMovable(true); f:SetResizable(true); f:EnableMouse(true); f:SetClampedToScreen(true)
   if f.SetClampRectInsets then f:SetClampRectInsets(0, 0, 0, -70) end
-  if f.SetResizeBounds then f:SetResizeBounds(820, 520, 1500, 1200) end
+  setBounds(f)
   f:RegisterForDrag("LeftButton")
   f:SetScript("OnDragStart", f.StartMoving)
   f:SetScript("OnDragStop", function(self) self:StopMovingOrSizing(); savePos(self, "mainPos") end)
   f:SetScript("OnShow", function() ns.RequestRefresh() end)
-  f:SetScript("OnSizeChanged", function() if f:IsShown() then ns.UpdateMain() end end)
+  -- While you drag the corner the layout is redone at most 10 times a second,
+  -- and once more when you let go.
+  f:SetScript("OnSizeChanged", function()
+    if not f:IsShown() then return end
+    if f.sizing then f.sizeDirty = true else ns.UpdateMain() end
+  end)
   f:Hide()
   tinsert(UISpecialFrames, "ForeverCampfireFrame")
 
@@ -413,11 +476,9 @@ local function build()
   grip:SetSize(16, 16); grip:SetPoint("BOTTOMRIGHT", -6, 6)
   grip:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
   grip:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
-  grip:SetScript("OnMouseDown", function() f:StartSizing("BOTTOMRIGHT") end)
-  grip:SetScript("OnMouseUp", function()
-    f:StopMovingOrSizing(); savePos(f, "mainPos")
-    ns.db.mainSize2 = { math.floor(f:GetWidth()), math.floor(f:GetHeight()) }
-  end)
+  grip:SetScript("OnMouseDown", function(_, button) if button == "LeftButton" then startSizing() end end)
+  grip:SetScript("OnMouseUp", function() stopSizing() end)
+  f:HookScript("OnHide", function() if f.sizing then stopSizing() end end)
 
   -- Tabs hang off the bottom edge, one per guide.
   tabs = {}

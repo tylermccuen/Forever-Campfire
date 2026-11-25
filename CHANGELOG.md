@@ -6,6 +6,8 @@
 - Camp tab: roomier tiles, names wrap instead of cutting off, and each tile shows the boss and dungeon on their own lines.
 - Uses about a third less memory: guides for professions you don't have aren't loaded until you open them.
 - The recipe list only draws what's on screen and no longer redraws on every bag change, so the window stays smooth.
+- Fixed: the resize corner could make the window jump to a huge size. The window now stays between its minimum size and your screen size, and a window saved too big shrinks back.
+- Resizing redraws the window at most 10 times a second, so dragging the corner stays smooth.
 - New `/fc mem` shows how much memory the addon uses.
 
 ## 0.6.1

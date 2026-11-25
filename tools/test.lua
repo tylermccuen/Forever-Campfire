@@ -394,6 +394,11 @@ check(campProfs == 12, "camp items for all 12 professions")
 ns.ShowMain("camp"); ns.ShowMain("both"); ns.views.both = "recipes"; ns.UpdateMain(); ns.views.both = "route"
 check(true, "Camp tab and Recipes view open without errors")
 do
+  local bw, bh = ns.MainSizeLimits(5000, 5000)
+  local sw, sh = ns.MainSizeLimits(10, 10)
+  check(bw <= 1500 and bh <= 1200 and sw == 820 and sh == 520, "window size is kept between 820x520 and the screen size")
+end
+do
   local area = mock()
   ns.LayoutCamp(area, 560); ns.LayoutRecipes(area, 560, ns.Collections.cooking)
   local up = 0
