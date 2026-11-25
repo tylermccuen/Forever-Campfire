@@ -143,11 +143,111 @@ function ns.LearnLine(skillKey, recipe)
   local L = C.gold .. "Learn: " .. C.r
   if kind == "start" then return L .. "you know it as soon as you learn " .. prof .. "." end
   if kind == "trainer" then
-    return L .. "from " .. (who or ("your " .. prof .. " trainer")) .. (skill and (" at " .. skill) or "") .. "."
+    return L .. "from " .. (ns.FText(who) or ("your " .. prof .. " trainer")) .. (skill and (" at " .. skill) or "") .. "."
   end
   if kind == "item" then
     return L .. C.white .. item .. C.r .. (skill and (", usable at " .. skill) or "") .. ". Trainers don't teach it."
   end
   if kind == "other" then return L .. item .. (skill and (C.grey .. " (skill " .. skill .. ")" .. C.r) or "") end
+  return nil
+end
+
+
+-- Where a route recipe comes from (Data/RecipeSources.lua), or nil.
+function ns.RecipeSource(skillKey, recipe)
+  local list = skillKey and ns.RecipeSources[skillKey]
+  return list and list[recipe]
+end
+
+---------------------------------------------------------------------------
+-- "Go to" steps: what to do, in order, before and while crafting a step.
+-- For a crafting step's chosen option this returns a list of
+--   { kind = "recipe" | "vendor" | "gather" | "craft", text = "...", done = bool, hint = "..." }
+-- 1. get the recipe (go to the vendor or trainer), 2. buy vendor materials,
+-- 3. gather or buy the rest, 4. craft. Steps with nothing to do are left out,
+-- except the craft itself.
+---------------------------------------------------------------------------
+local function joinNames(list)
+  local parts = {}
+  for _, n in ipairs(list) do table.insert(parts, n.need .. " " .. ns.ItemName(n.id)) end
+  return table.concat(parts, ", ")
+end
+
+-- The recipe part on its own: { text, done, hint } or nil when nothing needs doing.
+function ns.RecipePrep(step, opt)
+  if not (opt and opt.product and opt.recipe) or opt.recipeFrom then return nil end
+  local skillKey = step.skill
+  local src = ns.RecipeSource(skillKey, opt.recipe)
+  if not src or src[1] == "start" then return nil end
+  local known = ns.KnowsRecipe(skillKey, opt.recipe)
+  local prof = ns.SkillDisplayName(skillKey)
+  local rank = ns.Skill(skillKey).rank
+  local usable = src[2]
+  local later = usable and rank < usable and (" (usable at " .. usable .. ")") or ""
+  if src[1] == "trainer" then
+    -- trainer recipes are only shown when the profession window says you don't have it
+    if known ~= false then return nil end
+    local who = ns.FText(src.who) or ns.FText(step.guide.capitalTrainer) or ("your " .. prof .. " trainer")
+    return { kind = "recipe", done = false, text = "Go to " .. who .. " and learn " .. opt.recipe .. later .. "." }
+  end
+  local item = src[1]
+  if known == true then return { kind = "recipe", done = true, text = "Learn " .. opt.recipe .. " (" .. item .. ")." } end
+  if ns.Count(item) > 0 then
+    return { kind = "recipe", done = false, text = "Use " .. item .. " in your bags to learn it" .. later .. "." }
+  end
+  local at, get = ns.FText(src.at), ns.FText(src.get)
+  local text
+  if at then text = "Go to " .. at .. " and buy " .. item .. "."
+  elseif get then text = "Get " .. item .. ": " .. get .. "."
+  else text = "Get " .. item .. " (vendor or Auction House)." end
+  if usable and rank < usable then text = text .. " Usable at " .. usable .. "." end
+  local hint
+  if src.bop then hint = "Binds when picked up: buy it on the character that crafts." end
+  if known == nil then
+    hint = (hint and (hint .. " ") or "") .. "Already have it? Open your " .. prof .. " window and this ticks off."
+  end
+  return { kind = "recipe", done = false, text = text, hint = hint, maybe = (known == nil) }
+end
+
+function ns.PrepSteps(step, opt)
+  if step.kind ~= "level" or not (opt and opt.product) then return nil end
+  local out = {}
+  local r = ns.RecipePrep(step, opt)
+  if r then table.insert(out, r) end
+  if opt.count then
+    local vendor, other, vendorAll, otherAll = {}, {}, {}, {}
+    for _, n in ipairs(ns.OptionNeeds(step, opt)) do
+      if n.need > 0 then
+        local isVendor = ns.IsVendorItem(n.id)
+        table.insert(isVendor and vendorAll or otherAll, n)
+        local short = n.need - ns.Count(n.id)
+        if short > 0 then table.insert(isVendor and vendor or other, { id = n.id, need = short }) end
+      end
+    end
+    if #vendorAll > 0 then
+      table.insert(out, { kind = "vendor", done = #vendor == 0,
+        text = (#vendor == 0) and ("Vendor materials: you have them (" .. joinNames(vendorAll) .. ").")
+          or ("Buy from a vendor: " .. joinNames(vendor) .. ".") })
+    end
+    if #otherAll > 0 then
+      table.insert(out, { kind = "gather", done = #other == 0,
+        text = (#other == 0) and ("Materials: you have them (" .. joinNames(otherAll) .. ").")
+          or ("Gather or buy on the Auction House: " .. joinNames(other) .. ".") })
+    end
+  end
+  local verb = opt.verb or step.guide.verb or "Cook"
+  local crafts = ns.CraftsLeft(step, opt)
+  local what = (opt.count == 1) and (verb .. " one " .. opt.recipe)
+    or (verb .. " " .. (opt.count and ("about " .. crafts .. " ") or "") .. opt.recipe .. " until " .. step.to)
+  table.insert(out, { kind = "craft", done = ns.IsStepDone(step), text = what .. "." })
+  return out
+end
+
+-- The first "go to" step that isn't done yet, if it comes before crafting.
+function ns.NextPrep(step, opt)
+  for _, p in ipairs(ns.PrepSteps(step, opt) or {}) do
+    if p.kind == "craft" then return nil end
+    if not p.done and p.kind == "recipe" then return p end
+  end
   return nil
 end

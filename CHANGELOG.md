@@ -1,5 +1,12 @@
 # Forever Campfire
 
+## Unreleased
+
+- Crafting steps are now step by step: the detail panel lists what to do in order (go to the vendor or trainer for the recipe, buy vendor materials, gather or buy the rest, then craft), with a tick next to what's done.
+- The NOW line and tracker say where to go first when you still need a recipe, for example "Go to Algernon in Undercity and buy Recipe: Superior Mana Potion. Then make about 55 more...".
+- A recipe in your bags says to use it; a known recipe is ticked off once you've opened your profession window.
+- Show on map works for Superior Mana Potion (Horde): a pin on Algernon in Undercity until you know the recipe.
+
 ## 0.6.2
 
 - Fixed: opening Recipes after the Camp tab drew both on top of each other.
