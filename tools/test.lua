@@ -267,11 +267,54 @@ for _, k in ipairs({ "alchemy", "blacksmithing", "enchanting", "engineering", "l
 end
 ns.db.showAll = true; ns.ShowMain("tailoring"); ns.db.showAll = false
 check(true, "13 tabs in two rows build without errors")
+-- "Go to" steps before crafting: recipe first, then vendor and other materials, then craft
+do
+  S.profs = { alchemy = { 270, 300 } }; S.bags = { ["Sungrass"] = 8, ["Crystal Vial"] = 24 }; refresh()
+  local st = ns.CurrentStep(ns.guides.alchemy)
+  check(st.id == "b15", "alchemy 270 -> Elixir of Greater Defense or Superior Mana Potion")
+  ns.char.choice["alchemy/b15"] = 2
+  local opt = ns.ChosenOption(st)
+  local vendor = (S.faction == "Horde") and "Algernon in Undercity" or "Ulthir in Darnassus"
+  ns.char.known = nil
+  local prep = ns.PrepSteps(st, opt)
+  local kinds = {}
+  for _, p in ipairs(prep) do table.insert(kinds, p.kind) end
+  check(table.concat(kinds, ",") == "recipe,vendor,gather,craft", "go-to steps are recipe, vendor, gather, craft (" .. table.concat(kinds, ",") .. ")")
+  check(prep[1].text:find("Go to " .. vendor, 1, true) and prep[1].text:find("Recipe: Superior Mana Potion", 1, true), "recipe step names the vendor and town: " .. prep[1].text)
+  check(prep[2].text:find("Crystal Vial") and not prep[2].done, "vendor step lists the vials still to buy")
+  local now = ns.NowText(ns.guides.alchemy)
+  print("     now: " .. now)
+  check(now:find("Need the recipe?", 1, true) and now:find(vendor, 1, true), "NOW line points to the recipe vendor before crafting")
+  local body = ns.StepBody(st)
+  check(body:find("Step by step:", 1, true) and body:find("1. ", 1, true), "detail panel lists the steps in order")
+  if S.faction == "Horde" then check(ns.StepPins(st) and ns.StepPins(st)[1].zone == "Undercity", "Map pin for the recipe vendor") end
+  S.bags["Recipe: Superior Mana Potion"] = 1; refresh()
+  check(ns.PrepSteps(st, opt)[1].text:find("Use Recipe: Superior Mana Potion", 1, true), "recipe in bags -> use it")
+  ns.char.known = { alchemy = { ["Superior Mana Potion"] = true } }
+  prep = ns.PrepSteps(st, opt)
+  check(prep[1].done and not ns.NowText(ns.guides.alchemy):find("recipe", 1, true), "known recipe is ticked and the NOW line goes straight to crafting")
+  check(ns.StepPins(st) == nil, "no recipe pin once you know it")
+  ns.char.known = { alchemy = {} }
+  check(ns.PrepSteps(st, opt)[1].maybe ~= true and ns.NowText(ns.guides.alchemy):find("First:", 1, true), "missing recipe says First:")
+  -- trainer recipes only show a step when the scan says you lack them
+  S.profs.alchemy = { 240, 300 }; S.bags = {}; refresh()
+  local st2 = ns.CurrentStep(ns.guides.alchemy)
+  local p2 = ns.PrepSteps(st2, ns.ChosenOption(st2))
+  check(p2[1].kind == "recipe" and p2[1].text:find("learn Elixir of Greater Intellect", 1, true), "unknown trainer recipe -> go to the trainer: " .. p2[1].text)
+  ns.char.known = nil
+  p2 = ns.PrepSteps(st2, ns.ChosenOption(st2))
+  check(p2[1].kind ~= "recipe", "trainer recipes aren't nagged about before the window is read")
+  ns.char.choice["alchemy/b15"] = nil; ns.char.known = nil
+end
 S.profs = { cooking = { 290, 300 }, fishing = { 260, 300 } }; S.level = 60; S.quests = {}; refresh()
 
 -- Scenario 15: map pins
 local stepIds = {}
 for gk, g in pairs(ns.guides) do for _, st in ipairs(g.steps) do stepIds[gk .. "/" .. st.id] = true end end
+-- recipe vendor pins are keyed by a RecipeSources `pin` name instead of a step
+for _, list in pairs(ns.RecipeSources) do
+  if type(list) == "table" then for _, src in pairs(list) do if src.pin then stepIds["recipes/" .. src.pin] = true end end end
+end
 local badKeys = {}
 for gk, list in pairs(ns.Pins) do for sid, pins in pairs(list) do
   if not stepIds[gk .. "/" .. sid] then table.insert(badKeys, gk .. "/" .. sid) end
@@ -406,7 +449,7 @@ do
   end
   check(#missing == 0, "every route recipe says where it's learned" .. (#missing > 0 and (" (missing: " .. table.concat(missing, "; ") .. ")") or ""))
   local line = ns.LearnLine("alchemy", "Elixir of Greater Intellect")
-  check(line and line:find("Alchemy trainer at 235"), "trainer recipes name the trainer and skill")
+  check(line and line:find((S.faction == "Horde") and "Rogvar" or "Kylanna", 1, true) and line:find("at 235", 1, true), "trainer recipes name the trainer and skill")
   line = ns.LearnLine("enchanting", "Enchant Cloak - Minor Protection")
   check(line and line:find("Formula: Imbue Cloak %- Protection") and line:find("Trainers don't teach it"), "recipe items say trainers don't teach them")
 end

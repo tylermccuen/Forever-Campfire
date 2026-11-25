@@ -1,6 +1,7 @@
 -- Builds the text shown for a step in the detail panel.
 local _, ns = ...
 local C = ns.C
+local CHECK = "|TInterface\\RaidFrame\\ReadyCheck-Ready:14|t"
 
 -- Splits "Label: A (x), B (y), C" into a gold label and one entry per line,
 -- so long trainer / vendor lists are easy to scan. Short text is left alone.
@@ -46,8 +47,23 @@ function ns.StepBody(step)
     local hdr = C.gold .. kind .. C.r .. C.white .. (opt.product and opt.recipe or (opt.name or opt.recipe)) .. C.r
     if opt.count and opt.count > 1 then hdr = hdr .. C.grey .. "  (about " .. opt.count .. " crafts in all)" .. C.r end
     add(hdr)
+    local prep = (state ~= "done") and ns.PrepSteps and ns.PrepSteps(step, opt)
     if opt.recipeFrom then addList(add, "Recipe from", ns.FText(opt.recipeFrom))
-    elseif opt.product then add(ns.LearnLine(step.skill, opt.recipe)) end
+    elseif opt.product and not (prep and prep[1] and prep[1].kind == "recipe") then add(ns.LearnLine(step.skill, opt.recipe)) end
+    if prep and #prep > 1 then
+      -- "go to" steps in order: recipe, vendor, materials, craft
+      add(C.gold .. "Step by step:" .. C.r)
+      local first = true
+      for i, p in ipairs(prep) do
+        if p.done then
+          add("   " .. CHECK .. " " .. C.grey .. p.text .. C.r)
+        else
+          add("   " .. (first and C.white or C.grey) .. i .. ". " .. C.r .. (first and C.white or "") .. p.text .. (first and C.r or ""))
+          if p.hint then add("        " .. C.grey .. p.hint .. C.r) end
+          first = false
+        end
+      end
+    end
     if opt.mats and state == "done" then
       -- finished steps still list what the recipe takes, so you can plan ahead
       add(C.gold .. "Materials per craft:" .. C.r)

@@ -52,9 +52,7 @@ ns.RegisterGuide({
     Craft("b8", 150, 165, "Make Elixir of Fire Power", { Opt("A", "Elixir of Fire Power", 15, { { "Fire Oil", 2 }, { "Kingsblood", 1 }, { "Leaded Vial", 1 } }) }),
     Craft("b9", 165, 195, "Make Mana Potions", { Opt("A", "Mana Potion", 36, { { "Stranglekelp", 1 }, { "Kingsblood", 1 }, { "Leaded Vial", 1 } }) }),
     Craft("b10", 195, 225, "Make Nature Protection Potions", { Opt("A", "Nature Protection Potion", 36, { { "Liferoot", 1 }, { "Stranglekelp", 1 }, { "Leaded Vial", 1 } }) },
-      { { H = "Recipe: Nature Protection Potion (190) from Bronk (Feralas), Glyx Brewright (Stranglethorn) or Alchemist Pestlezugg (Tanaris).",
-          A = "Recipe: Nature Protection Potion (190) from Logannas (Feralas), Glyx Brewright (Stranglethorn) or Alchemist Pestlezugg (Tanaris)." },
-        "It binds when picked up: buy it on the character leveling Alchemy." },
+      nil,
       { recipes = { "Recipe: Nature Protection Potion" } }),
     Train("art", 300, "Train Artisan Alchemy", 200, 35, { { H = "Rogvar in Stonard (Swamp of Sorrows).", A = "Kylanna Windwhisper in Feathermoon Stronghold (Feralas)." } }),
     Craft("b11", 225, 235, "Keep making Nature Protection Potions", { Opt("A", "Nature Protection Potion", 26, { { "Liferoot", 1 }, { "Stranglekelp", 1 }, { "Leaded Vial", 1 } }) },
@@ -67,12 +65,11 @@ ns.RegisterGuide({
         { notes = { "If Stonescale Eel is expensive: make these to 265, then Superior Mana Potions to 300." } }),
     }),
     Craft("b14", 260, 265, "Make a few more Elixirs of Greater Intellect", { Opt("A", "Elixir of Greater Intellect", 10, { { "Blindweed", 1 }, { "Khadgar's Whisker", 1 }, { "Crystal Vial", 1 } }) }),
-    Craft("b15", 265, 300, "Make Elixir of Greater Defense", {
+    Craft("b15", 265, 300, "Make Greater Defense or Superior Mana Potions", {
       Opt("A", "Elixir of Greater Defense", 44, { { "Stonescale Oil", 2 }, { "Sungrass", 1 }, { "Crystal Vial", 1 } },
-        { notes = { { H = "The recipe item is named Recipe: Elixir of Superior Defense. Kor'geld (Orgrimmar) sells it.", A = "The recipe item is named Recipe: Elixir of Superior Defense. Soolie Berryfizz (Ironforge) sells it." },
-                    "Yellow from 280. Make a few extra if you fall short." } }),
+        { notes = { "The recipe item is named Recipe: Elixir of Superior Defense, not Greater.", "Yellow from 280. Make a few extra if you fall short." } }),
       Opt("B", "Superior Mana Potion", 55, { { "Sungrass", 2 }, { "Blindweed", 2 }, { "Crystal Vial", 1 } },
-        { notes = { { H = "Recipe from Algernon (Undercity).", A = "Recipe from Ulthir (Darnassus)." }, "Use this if you skipped Stonescale Oil." } }),
+        { notes = { "Use this if you skipped Stonescale Oil." } }),
     }, nil, { recipes = { "Recipe: Elixir of Superior Defense", "Recipe: Superior Mana Potion" } }),
   },
 })

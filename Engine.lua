@@ -426,6 +426,12 @@ function ns.NowText(guide)
     if opt.count ~= 1 then txt = txt .. " until " .. step.to end
     txt = txt .. "."
     if short then txt = txt .. " " .. C.red .. "Missing: " .. short .. C.r end
+    -- the recipe comes first: say where to go before what to make
+    local prep = ns.NextPrep and ns.NextPrep(step, opt)
+    if prep then
+      local function lower(s) return s:sub(1, 1):lower() .. s:sub(2) end
+      txt = C.gold .. (prep.maybe and "Need the recipe? " or "First: ") .. C.r .. prep.text .. " Then " .. lower(txt)
+    end
     return txt
   end
   return (step.guide.gatherVerb or "Fish") .. " until " .. skillName .. " " .. step.to .. " (" .. toGo .. " to go)."

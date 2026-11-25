@@ -165,6 +165,11 @@ local function join(...)
 end
 
 return {
+  -- Recipe vendors, keyed by the `pin` name in Data/RecipeSources.lua.
+  -- Shown on a crafting step until you know the recipe.
+  recipes = {
+    ["Recipe: Superior Mana Potion"] = { P("Undercity", 51.7, 74.7, "Algernon (Recipe: Superior Mana Potion)", "npc", H) },
+  },
   fishing = {
     learn  = join(FISH_TRAINERS, FISH_SUPPLY),
     f1     = STARTER_WATER,
@@ -216,6 +221,12 @@ end)
 function ns.StepPins(step)
   local g = ns.Pins[step.guide.key]
   local list = g and g[step.id]
+  if not list and step.kind == "level" and ns.ChosenOption then
+    -- crafting step: the recipe vendor, until you know the recipe
+    local opt = ns.ChosenOption(step)
+    local src = opt and ns.RecipeSource and ns.RecipeSource(step.skill, opt.recipe)
+    if src and src.pin and ns.KnowsRecipe(step.skill, opt.recipe) ~= true then list = ns.Pins.recipes[src.pin] end
+  end
   if not list then return nil end
   local fac, out = ns.Faction(), {}
   for _, p in ipairs(list) do
