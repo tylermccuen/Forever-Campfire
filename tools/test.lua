@@ -411,6 +411,22 @@ do
   local far = 0
   for _, cv in ipairs(ns.listCanvases) do if cv.root:IsShown() then for _, r in ipairs(cv.rows) do if r:IsShown() then far = far + 1; end end end end
   check(far > 0 and far <= 25, "scrolling down draws the rows there instead")
+  -- the filter buttons work after visiting Camp
+  ns.LayoutCamp(area, 560); ns.LayoutRecipes(area, 560, ns.Collections.cooking, 0, 400)
+  local function shownButtons()
+    for _, cv in ipairs(ns.listCanvases) do if cv.root:IsShown() then return cv.buttons, cv end end
+  end
+  local btns = shownButtons()
+  local old = ns.UpdateMain
+  ns.UpdateMain = function() ns.LayoutRecipes(area, 560, ns.Collections.cooking, 0, 400) end
+  btns[2].scripts.OnClick(btns[2])
+  local f1 = ns.recipeFilter
+  local _, cvNow = shownButtons()
+  btns[3].scripts.OnClick(btns[3])
+  local f2 = ns.recipeFilter
+  btns[1].scripts.OnClick(btns[1])
+  ns.UpdateMain = old
+  check(f1 == "missing" and f2 == "now" and ns.recipeFilter == "all", "All / Missing / Can learn now buttons switch the filter")
 end
 C_TradeSkillUI = nil
 
