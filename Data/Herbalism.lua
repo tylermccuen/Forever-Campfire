@@ -3,6 +3,15 @@
 -- Step format: see Data/Cooking.lua and Data/Mining.lua.
 local _, ns = ...
 
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
+  key = "herbalism",
+  capitalTrainer = { H = "Jandi in Orgrimmar", A = "Tannysa in Stormwind" },
+  name = "Herbalism",
+  skills = { "herbalism" },
+  icon = "Interface\\Icons\\Spell_Nature_NatureTouchGrow",
+}, function()
 local TRAINERS = {
   H = "Trainers: Jandi (Orgrimmar), Martha Alliestar (Undercity), Komin Winterhoof (Thunder Bluff), Mishiki (Sen'jin Village), Faruza (Brill)",
   A = "Trainers: Tannysa (Stormwind), Reyna Stonebranch (Ironforge), Firodren Mooncaller (Darnassus), Herbalist Pomeroy (Elwynn Forest), Malorne Bladeleaf (Dolanaar)",
@@ -10,10 +19,6 @@ local TRAINERS = {
 
 ns.RegisterGuide({
   key = "herbalism",
-  capitalTrainer = { H = "Jandi in Orgrimmar", A = "Tannysa in Stormwind" },
-  name = "Herbalism",
-  skills = { "herbalism" },
-  icon = "Interface\\Icons\\Spell_Nature_NatureTouchGrow",
   checked = "2026-11-24",
   gatherVerb = "Pick herbs",
   catchLabel = "You'll gather:",
@@ -87,3 +92,4 @@ ns.RegisterGuide({
       } },
   },
 })
+end)

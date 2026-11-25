@@ -25,6 +25,15 @@ STEP FORMAT (shared by every guide, see README.md "Adding a profession"):
 ]]
 local _, ns = ...
 
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
+  key = "cooking",
+  capitalTrainer = { H = "Zamja in Orgrimmar", A = "Stephen Ryback in Stormwind" },
+  name = "Cooking",
+  skills = { "cooking" },
+  icon = "Interface\\Icons\\INV_Misc_Food_15",
+}, function()
 local TRAINERS = {
   H = "Zamja (Orgrimmar), Eunice Burch (Undercity), Aska Mistrunner (Thunder Bluff), Cook Torka (Razor Hill), Pyall Silentstride (Bloodhoof Village), William Pickman (Brill inn), Nyalah Brightfire / Zerril Softbreeze (Zephras Isle)",
   A = "Stephen Ryback (Stormwind), Daryl Riknussun (Ironforge), Alegorn (Darnassus), Tomas (Goldshire inn), Gremlock Pilsnor (Kharanos), Zarrin (Dolanaar), Nyalah Brightfire / Zerril Softbreeze (Zephras Isle)",
@@ -33,10 +42,6 @@ local TRAINERS = {
 ns.RegisterGuide({
   key = "cooking",
   recipePrefix = "Recipe: ",
-  capitalTrainer = { H = "Zamja in Orgrimmar", A = "Stephen Ryback in Stormwind" },
-  name = "Cooking",
-  skills = { "cooking" },
-  icon = "Interface\\Icons\\INV_Misc_Food_15",
   checked = "2026-11-24",
   -- What to do when you hit each cap (keyed by the cap you are stuck at).
   rankUps = {
@@ -138,3 +143,4 @@ ns.RegisterGuide({
       notes = { "Buy Refreshing Spring Water from any innkeeper." } },
   },
 })
+end)

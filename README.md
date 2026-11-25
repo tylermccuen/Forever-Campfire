@@ -4,7 +4,7 @@ Leveling guide for every WoW Forever profession (Cooking, Fishing, First Aid, Mi
 
 ## In game
 - **Fish button on the minimap** (or the addon compartment): left-click opens the guide, right-click shows/hides the tracker, drag to move.
-- `/fc` opens the guide. `/fc cooking`, `/fc fishing`, `/fc both`, `/fc mining`, `/fc herbalism`, `/fc skinning`, `/fc tailoring` (any profession name), `/fc map`, `/fc pins`, `/fc catches`, `/fc shop`, `/fc sizzle`, `/fc tracker`, `/fc lock`, `/fc minimap`, `/fc reset`.
+- `/fc` opens the guide. `/fc cooking`, `/fc fishing`, `/fc both`, `/fc mining`, `/fc herbalism`, `/fc skinning`, `/fc tailoring` (any profession name), `/fc map`, `/fc pins`, `/fc catches`, `/fc shop`, `/fc sizzle`, `/fc tracker`, `/fc lock`, `/fc minimap`, `/fc mem`, `/fc reset`.
 
 ## What it does
 - **Skill tree layout**: each guide is drawn as a tree, rank by rank (Apprentice, Journeyman, Expert, Artisan). The rank you're in is open: steps run top to bottom, recipe choices fork into A/B tiles and join again, and rank-up steps show as purple gates. Finished and future ranks fold into one slim tile each (click to open). Click any tile to see it in the detail panel on the right; click an option tile to use that recipe (right-click to let the guide pick again).
@@ -25,11 +25,20 @@ Leveling guide for every WoW Forever profession (Cooking, Fishing, First Aid, Mi
 - **Sizzle!**: a little timing mini-game that pops up while you craft from a profession window (never while fishing). Left-click inside the gold zone to build a combo; right-drag to move it. It's just for fun and doesn't change anything about the craft. Turn it off with the checkbox at the bottom of the guide.
 
 ## Adding a profession (same layout)
-1. Add `Data/<Profession>.lua` and call `ns.RegisterGuide{ key, name, skills = {"<skillkey>"}, icon, checked, rankUps, steps }`. The skill keys for every profession are already in `ns.SKILLS` (`Core.lua`).
+1. Add `Data/<Profession>.lua` in two parts (see `Data/Mining.lua`):
+   ```lua
+   ns.LazyGuide({ key = "mining", name = "Mining", skills = { "mining" }, icon = "...", capitalTrainer = { H = "...", A = "..." } }, function()
+     -- locals the guide uses go in here too
+     ns.RegisterGuide({ key = "mining", checked = "...", rankUps = { ... }, steps = { ... } })
+   end)
+   ```
+   The header is all that exists until the guide is needed (its profession is known, its tab is opened, or "All tabs" is ticked). The function then runs once. This keeps memory low however many guides are added. The skill keys for every profession are already in `ns.SKILLS` (`Core.lua`).
 2. Write the steps in the format described at the top of `Data/Cooking.lua`: `learn` / `train` / `level` / `quest` kinds, `options` with `mats`, plus `gather`, `buy`, `notes`, and `requires`.
 3. Add item names to `Data/Items.lua`. Item counting falls back to these names if an ID turns out to be wrong.
 4. Crafting guides use the short helpers `ns.Craft`, `ns.Opt` and `ns.Train` from `Core.lua` (see `Data/Tailoring.lua`), and can list materials by exact item name instead of ID. Gathering guides can also set `gatherVerb`, `catchLabel`, `tool` and `tracking` (see `Data/Mining.lua`).
 5. List the file in `ForeverCampfire.toc` after the other Data files. The new tab, tracker, tooltips, shopping list and vendor alerts all work without further changes.
-5. Set `verb = "Craft"` (or "Smelt", "Brew"...) on the guide so the NOW box doesn't say "Cook".
+6. Set `verb = "Craft"` (or "Smelt", "Brew"...) on the guide so the NOW box doesn't say "Cook".
 
-Test offline: `texlua tools/test.lua ForeverCampfire`.
+Other big data works the same way: `ns.Lazy("Camp", function() return {...} end)` builds `ns.Camp` the first time it's read, and `ns.LazyCollection(header, function() return recipes end)` does the same for a recipe collection. Long lists (the Recipes view) only draw the rows on screen, so a collection can hold hundreds of recipes.
+
+Test offline: `texlua tools/test.lua ForeverCampfire`. `/fc mem` shows the addon's memory in game and which guides are loaded.

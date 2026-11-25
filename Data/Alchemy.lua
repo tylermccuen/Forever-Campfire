@@ -1,6 +1,16 @@
 -- Alchemy 1-300 for WoW Forever.
 -- Route checked 2026-11-24.
 local _, ns = ...
+
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
+  key = "alchemy",
+  capitalTrainer = { H = "Whuut in Orgrimmar", A = "Tel'Athir in Stormwind" },
+  name = "Alchemy",
+  skills = { "alchemy" },
+  icon = "Interface\\Icons\\Trade_Alchemy",
+}, function()
 local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
 
 local APPRENTICE = {
@@ -14,10 +24,6 @@ local JOURNEYMAN = {
 
 ns.RegisterGuide({
   key = "alchemy",
-  capitalTrainer = { H = "Whuut in Orgrimmar", A = "Tel'Athir in Stormwind" },
-  name = "Alchemy",
-  skills = { "alchemy" },
-  icon = "Interface\\Icons\\Trade_Alchemy",
   checked = "2026-11-24",
   verb = "Make",
   buyLabel = "Materials for this step:",
@@ -69,3 +75,4 @@ ns.RegisterGuide({
     }, nil, { recipes = { "Recipe: Elixir of Superior Defense", "Recipe: Superior Mana Potion" } }),
   },
 })
+end)

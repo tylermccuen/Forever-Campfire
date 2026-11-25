@@ -15,6 +15,9 @@ local function P(zone, x, y, label, kind, faction, radius)
 end
 local H, A = "Horde", "Alliance"
 
+-- Built the first time the world map draws pins (ns.Pins).
+ns.Lazy("Pins", function()
+
 -- Fishing trainers -----------------------------------------------------------
 local FISH_TRAINERS = {
   P("Orgrimmar", 69.7, 29.3, "Lumak (Fishing trainer)", "npc", H),
@@ -161,7 +164,7 @@ local function join(...)
   return out
 end
 
-ns.Pins = {
+return {
   fishing = {
     learn  = join(FISH_TRAINERS, FISH_SUPPLY),
     f1     = STARTER_WATER,
@@ -207,6 +210,7 @@ ns.Pins = {
              P("Feralas", 46.3, 41.7, "Vivianna (Bright Baubles)", "npc", A) },
   },
 }
+end)
 
 -- Pins for a step, for this character's faction.
 function ns.StepPins(step)

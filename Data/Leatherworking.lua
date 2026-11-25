@@ -1,14 +1,20 @@
 -- Leatherworking 1-300 for WoW Forever.
 -- Route checked 2026-11-24.
 local _, ns = ...
-local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
 
-ns.RegisterGuide({
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
   key = "leatherworking",
   capitalTrainer = { H = "Karolek in Orgrimmar", A = "Simon Tanner in Stormwind" },
   name = "Leatherworking",
   skills = { "leatherworking" },
   icon = "Interface\\Icons\\Trade_LeatherWorking",
+}, function()
+local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
+
+ns.RegisterGuide({
+  key = "leatherworking",
   checked = "2026-11-24",
   verb = "Make",
   buyLabel = "Materials for this step:",
@@ -93,3 +99,4 @@ ns.RegisterGuide({
       { recipes = { "Pattern: Runic Leather Headband" } }),
   },
 })
+end)

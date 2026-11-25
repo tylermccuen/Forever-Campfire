@@ -43,6 +43,7 @@ function ns.ScanKnownRecipes()
   ns.char.known = ns.char.known or {}
   local first = not ns.char.known[key]
   ns.char.known[key] = known
+  ns.knownVersion = (ns.knownVersion or 0) + 1   -- views redraw when this changes
   if first then ns.Print("Read your " .. ns.SkillDisplayName(key) .. " recipes (" .. n .. " known). The Recipes and Camp views now show what you have.") end
   ns.RequestRefresh()
 end

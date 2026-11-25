@@ -17,18 +17,25 @@ local function addUse(ref, use)
   usesByName[name] = list
 end
 
+-- Item uses are indexed per guide when the guide is built, so tooltips cover
+-- your own professions (and any you preview) without loading the rest.
+local function indexGuide(g)
+  for _, step in ipairs(g.steps) do
+    for _, opt in ipairs(step.options or {}) do
+      for _, m in ipairs(opt.mats or {}) do addUse(m[1], { step = step, opt = opt, kind = "mat" }) end
+      for _, b in ipairs(opt.buy or {}) do addUse(b.id, { step = step, kind = "buy", count = b.count }) end
+    end
+    for _, gth in ipairs(step.gather or {}) do addUse(gth.id, { step = step, kind = "gather", count = gth.count }) end
+    for _, b in ipairs(step.buy or {}) do addUse(b.id, { step = step, kind = "buy", count = b.count }) end
+    for _, c in ipairs(step.catch or {}) do addUse(c[1], { step = step, kind = "catch" }) end
+  end
+end
+
 local function buildIndex()
   for _, key in ipairs(ns.guideOrder) do
-    for _, step in ipairs(ns.guides[key].steps) do
-      for _, opt in ipairs(step.options or {}) do
-        for _, m in ipairs(opt.mats or {}) do addUse(m[1], { step = step, opt = opt, kind = "mat" }) end
-        for _, b in ipairs(opt.buy or {}) do addUse(b.id, { step = step, kind = "buy", count = b.count }) end
-      end
-      for _, gth in ipairs(step.gather or {}) do addUse(gth.id, { step = step, kind = "gather", count = gth.count }) end
-      for _, b in ipairs(step.buy or {}) do addUse(b.id, { step = step, kind = "buy", count = b.count }) end
-      for _, c in ipairs(step.catch or {}) do addUse(c[1], { step = step, kind = "catch" }) end
-    end
+    if ns.IsGuideBuilt(key) then indexGuide(ns.guides[key]) end
   end
+  table.insert(ns.guideBuilt, indexGuide)
 end
 
 local function tooltipLines(tt, id, name)
@@ -125,7 +132,7 @@ local function upcomingSteps()
   for _, key in ipairs(ns.guideOrder) do
     local g = ns.guides[key]
     local n = 0
-    for _, step in ipairs(g.steps) do
+    for _, step in ipairs(ns.GuideKnown(g) and g.steps or {}) do
       if not ns.IsStepDone(step) then
         table.insert(out, step); n = n + 1
         if n >= 4 then break end

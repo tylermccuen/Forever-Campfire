@@ -9,7 +9,8 @@ local function T(tier, name, skill, effect, mats, learn, station)
 end
 local T1LEARN = "Trainer at skill 20, or the Camping 101 quest in the starting zones"
 
-ns.Camp = {
+-- Built the first time something reads ns.Camp (Camp tab, a Blueprint tooltip, a vendor).
+ns.Lazy("Camp", function() return {
   checked = "2026-11-24",
   rules = {
     "Someone places a campfire. Everyone at it can add one camp item from their profession.",
@@ -88,4 +89,4 @@ ns.Camp = {
     },
   },
   order = { "cooking", "fishing", "firstaid", "alchemy", "blacksmithing", "enchanting", "engineering", "herbalism", "leatherworking", "mining", "skinning", "tailoring" },
-}
+} end)

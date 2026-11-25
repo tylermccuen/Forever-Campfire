@@ -3,6 +3,15 @@
 -- Step format: see Data/Cooking.lua.
 local _, ns = ...
 
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
+  key = "fishing",
+  capitalTrainer = { H = "Lumak in Orgrimmar", A = "Arnold Leland in Stormwind" },
+  name = "Fishing",
+  skills = { "fishing" },
+  icon = "Interface\\Icons\\Trade_Fishing",
+}, function()
 local TRAINERS = {
   H = "Lumak (Orgrimmar), Armand Cromwell (Undercity), Kah Mistrunner (Thunder Bluff), Lau'Tiki (Sen'jin Village coast), Uthan Stillwater (Stonebull Lake, Mulgore), Clyde Kellen (Brightwater Lake, Tirisfal), Baelann Swiftcurrent / Fenn Fairweather (Zephras Isle)",
   A = "Arnold Leland (Stormwind), Grimnur Stonebrand (Ironforge), Astaia (Darnassus), Lee Brown (Crystal Lake, Elwynn), Paxton Ganter (Iceflow Lake, Dun Morogh), Androl Oakhand (Rut'theran Village), Baelann Swiftcurrent / Fenn Fairweather (Zephras Isle)",
@@ -14,10 +23,6 @@ local SUPPLY = {
 
 ns.RegisterGuide({
   key = "fishing",
-  capitalTrainer = { H = "Lumak in Orgrimmar", A = "Arnold Leland in Stormwind" },
-  name = "Fishing",
-  skills = { "fishing" },
-  icon = "Interface\\Icons\\Trade_Fishing",
   checked = "2026-11-24",
   rankUps = {
     [75]  = { name = "Journeyman Fishing", skill = 50, level = 10, how = "Train it at your Fishing trainer" },
@@ -81,3 +86,4 @@ ns.RegisterGuide({
         "Use Bright Baubles or most fish get away.", } },
   },
 })
+end)

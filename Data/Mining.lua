@@ -8,6 +8,15 @@
 --   option.name / option.verb / option.now / option.buy  (see README)
 local _, ns = ...
 
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
+  key = "mining",
+  capitalTrainer = { H = "Makaru in Orgrimmar", A = "Gelman Stonehand in Stormwind" },
+  name = "Mining",
+  skills = { "mining" },
+  icon = "Interface\\Icons\\Trade_Mining",
+}, function()
 local TRAINERS = {
   H = "Trainers: Makaru (Orgrimmar), Brom Killian (Undercity), Brek Stonehoof (Thunder Bluff), Krunn (Razor Hill)",
   A = "Trainers: Gelman Stonehand (Stormwind), Geofram Bouldertoe (Ironforge), Yarr Hammerstone (Steelgrill's Depot), Kurdram Stonehammer (Auberdine)",
@@ -19,10 +28,6 @@ local PICKS = {
 
 ns.RegisterGuide({
   key = "mining",
-  capitalTrainer = { H = "Makaru in Orgrimmar", A = "Gelman Stonehand in Stormwind" },
-  name = "Mining",
-  skills = { "mining" },
-  icon = "Interface\\Icons\\Trade_Mining",
   checked = "2026-11-24",
   gatherVerb = "Mine",
   catchLabel = "You'll gather:",
@@ -137,3 +142,4 @@ ns.RegisterGuide({
       } },
   },
 })
+end)

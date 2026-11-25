@@ -98,7 +98,7 @@ function ns.IsStepDone(step)
 end
 
 -- Drop options / buy / gather entries meant for the other faction (field f = "Horde"/"Alliance").
-function ns.ApplyFaction()
+function ns.ApplyFaction(g)
   local fac = ns.Faction()
   local function keep(list)
     if not list then return nil end
@@ -106,13 +106,11 @@ function ns.ApplyFaction()
     for _, e in ipairs(list) do if not e.f or e.f == fac then table.insert(out, e) end end
     return out
   end
-  for _, key in ipairs(ns.guideOrder) do
-    for _, step in ipairs(ns.guides[key].steps) do
-      step.options = keep(step.options)
-      step.buy = keep(step.buy)
-      step.gather = keep(step.gather)
-      if step.options and #step.options == 0 then step.options = nil end
-    end
+  for _, step in ipairs(g.steps) do
+    step.options = keep(step.options)
+    step.buy = keep(step.buy)
+    step.gather = keep(step.gather)
+    if step.options and #step.options == 0 then step.options = nil end
   end
 end
 
@@ -456,7 +454,8 @@ function ns.Refresh()
 
   for _, key in ipairs(ns.guideOrder) do
     local g = ns.guides[key]
-    local cur = ns.CurrentStep(g)
+    -- only guides for professions you have (or are previewing) are worked out
+    local cur = (ns.GuideKnown(g) or (ns.db.showAll and ns.IsGuideBuilt(key))) and ns.CurrentStep(g) or nil
     local prev = ns.lastCurrent[key]
     if initialized and prev ~= cur and prev and ns.IsStepDone(prev) and ns.db.announce then
       local relevant = (key == ns.TrackedGuideKey())
@@ -561,7 +560,10 @@ ev:SetScript("OnEvent", function(self, event, arg1)
     if arg1 ~= ADDON then return end
     self:UnregisterEvent("ADDON_LOADED")
     ns.InitDB()
-    ns.ApplyFaction()
+    ns.factionReady = true
+    for _, key in ipairs(ns.guideOrder) do
+      if ns.IsGuideBuilt(key) then ns.ApplyFaction(ns.guides[key]) end
+    end
     for _, e in ipairs(EVENTS) do pcall(self.RegisterEvent, self, e) end
     if ns.InitUI then ns.InitUI() end
     if C_Timer and C_Timer.NewTicker then C_Timer.NewTicker(20, ns.RequestRefresh) end -- lure expiry, game clock
@@ -602,11 +604,20 @@ SlashCmdList.FOREVERCAMPFIRE = function(msg)
   elseif msg == "pins" then ns.db.mapPins = not ns.db.mapPins; ns.Print("Map pins for your current step: " .. (ns.db.mapPins and "on" or "off")); if ns.RefreshMapPins then ns.RefreshMapPins() end
   elseif msg == "sizzle" or msg == "game" then if ns.ShowMiniGame then ns.ShowMiniGame() end
   elseif msg == "shop" then ns.ShowMain(); if ns.ToggleShop then ns.ToggleShop(true) end
+  elseif msg == "mem" or msg == "memory" then
+    local upd = (C_AddOns and C_AddOns.UpdateAddOnMemoryUsage) or UpdateAddOnMemoryUsage
+    local get = (C_AddOns and C_AddOns.GetAddOnMemoryUsage) or GetAddOnMemoryUsage
+    if upd and get then
+      upd()
+      local built = {}
+      for _, key in ipairs(ns.guideOrder) do if ns.IsGuideBuilt(key) then table.insert(built, ns.guides[key].name) end end
+      ns.Print(string.format("Memory: %.0f KB. Guides loaded: %s.", get(ADDON), (#built > 0 and table.concat(built, ", ") or "none")))
+    end
   elseif msg == "reset" then
     ns.char.choice = {}; ns.db.trackerPos = nil; ns.db.mainPos = nil; ns.db.mainSize = nil; ns.db.mainSize2 = nil
     ns.Print("Reset recipe choices and window positions. /reload to re-center windows.")
     ns.RequestRefresh()
   else
-    ns.Print("/fc — open guide | cooking | fishing | both | mining | herbalism | skinning | shop | map | pins | catches | sizzle | tracker | lock | minimap | reset")
+    ns.Print("/fc — open guide | cooking | fishing | both | mining | herbalism | skinning | shop | map | pins | catches | sizzle | tracker | lock | minimap | mem | reset")
   end
 end

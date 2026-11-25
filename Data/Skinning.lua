@@ -3,6 +3,15 @@
 -- Step format: see Data/Cooking.lua and Data/Mining.lua.
 local _, ns = ...
 
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
+  key = "skinning",
+  capitalTrainer = { H = "Thuwd in Orgrimmar", A = "Maris Granger in Stormwind" },
+  name = "Skinning",
+  skills = { "skinning" },
+  icon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
+}, function()
 local TRAINERS = {
   H = "Trainers: Thuwd (Orgrimmar), Killian Hagey (Undercity), Mooranta (Thunder Bluff), Yonn Deepcut (Bloodhoof Village), Rand Rhobart (Tirisfal Glades)",
   A = "Trainers: Maris Granger (Stormwind), Balthus Stoneflayer (Ironforge), Eladriel (Darnassus), Helene Peltskinner (Goldshire), Radnaal Maneweaver (Teldrassil)",
@@ -10,10 +19,6 @@ local TRAINERS = {
 
 ns.RegisterGuide({
   key = "skinning",
-  capitalTrainer = { H = "Thuwd in Orgrimmar", A = "Maris Granger in Stormwind" },
-  name = "Skinning",
-  skills = { "skinning" },
-  icon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01",
   checked = "2026-11-24",
   gatherVerb = "Skin",
   catchLabel = "You'll gather:",
@@ -104,3 +109,4 @@ ns.RegisterGuide({
       } },
   },
 })
+end)

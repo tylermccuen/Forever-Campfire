@@ -1,14 +1,20 @@
 -- Engineering 1-300 for WoW Forever.
 -- Route checked 2026-11-24.
 local _, ns = ...
-local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
 
-ns.RegisterGuide({
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
   key = "engineering",
   capitalTrainer = { H = "Thund in Orgrimmar", A = "Sprite Jumpsprocket in Stormwind (Dwarven District)" },
   name = "Engineering",
   skills = { "engineering" },
   icon = "Interface\\Icons\\Trade_Engineering",
+}, function()
+local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
+
+ns.RegisterGuide({
+  key = "engineering",
   checked = "2026-11-24",
   verb = "Make",
   buyLabel = "Materials for this step:",
@@ -90,3 +96,4 @@ ns.RegisterGuide({
       { recipes = { "Schematic: Thorium Tube" } }),
   },
 })
+end)

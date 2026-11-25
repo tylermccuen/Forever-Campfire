@@ -1,6 +1,16 @@
 -- Blacksmithing 1-300 for WoW Forever.
 -- Route checked 2026-11-24.
 local _, ns = ...
+
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
+  key = "blacksmithing",
+  capitalTrainer = { H = "Ug'thok in Orgrimmar", A = "Dane Lindgren in Stormwind" },
+  name = "Blacksmithing",
+  skills = { "blacksmithing" },
+  icon = "Interface\\Icons\\Trade_BlackSmithing",
+}, function()
 local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
 
 local APPRENTICE = {
@@ -14,10 +24,6 @@ local JOURNEYMAN = {
 
 ns.RegisterGuide({
   key = "blacksmithing",
-  capitalTrainer = { H = "Ug'thok in Orgrimmar", A = "Dane Lindgren in Stormwind" },
-  name = "Blacksmithing",
-  skills = { "blacksmithing" },
-  icon = "Interface\\Icons\\Trade_BlackSmithing",
   checked = "2026-11-24",
   verb = "Make",
   buyLabel = "Materials for this step:",
@@ -101,3 +107,4 @@ ns.RegisterGuide({
     }, { "Blessed Plate plans (rare drops) can also level you here and sell well." }),
   },
 })
+end)

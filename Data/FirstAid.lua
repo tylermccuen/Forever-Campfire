@@ -2,6 +2,16 @@
 -- Route checked 2026-11-24.
 -- Crafting step helpers (ns.Craft / ns.Opt / ns.Train) are in Core.lua.
 local _, ns = ...
+
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
+  key = "firstaid",
+  capitalTrainer = { H = "Arnok in Orgrimmar", A = "Shaina Fuller in Stormwind" },
+  name = "First Aid",
+  skills = { "firstaid" },
+  icon = "Interface\\Icons\\Spell_Holy_SealOfSacrifice",
+}, function()
 local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
 
 local TRAINERS = {
@@ -12,10 +22,6 @@ local BOOKS = { H = "Balai Lok'Wein in Dustwallow Marsh (Brackenwall Village)", 
 
 ns.RegisterGuide({
   key = "firstaid",
-  capitalTrainer = { H = "Arnok in Orgrimmar", A = "Shaina Fuller in Stormwind" },
-  name = "First Aid",
-  skills = { "firstaid" },
-  icon = "Interface\\Icons\\Spell_Holy_SealOfSacrifice",
   checked = "2026-11-24",
   verb = "Make",
   buyLabel = "Materials for this step:",
@@ -100,3 +106,4 @@ ns.RegisterGuide({
       { "The doctor teaches it at 290." }),
   },
 })
+end)

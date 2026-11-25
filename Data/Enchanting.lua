@@ -1,14 +1,20 @@
 -- Enchanting 1-300 for WoW Forever.
 -- Route checked 2026-11-24.
 local _, ns = ...
-local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
 
-ns.RegisterGuide({
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
   key = "enchanting",
   capitalTrainer = { H = "Jhag in Orgrimmar", A = "Betty Quin in Stormwind (Mage Quarter)" },
   name = "Enchanting",
   skills = { "enchanting" },
   icon = "Interface\\Icons\\Trade_Engraving",
+}, function()
+local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
+
+ns.RegisterGuide({
+  key = "enchanting",
   checked = "2026-11-24",
   verb = "Make",
   buyLabel = "Materials for this step:",
@@ -99,3 +105,4 @@ ns.RegisterGuide({
       { recipes = { "Formula: Runed Arcanite Rod" } }),
   },
 })
+end)

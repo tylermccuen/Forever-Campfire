@@ -5,25 +5,34 @@ local fails = 0
 local function check(cond, msg) if cond then print("ok   " .. msg) else fails = fails + 1; print("FAIL " .. msg) end end
 
 -- ---------- mock widgets ----------
-local function mock()
-  local o = { shown = false, scripts = {} }
-  return setmetatable(o, { __index = function(t, k)
-    if k == "Show" then return function(s) s.shown = true; if s.scripts.OnShow then s.scripts.OnShow(s) end end end
-    if k == "Hide" then return function(s) s.shown = false end end
-    if k == "SetShown" then return function(s, v) if v then s:Show() else s:Hide() end end end
-    if k == "IsShown" then return function(s) return s.shown end end
-    if k == "SetScript" then return function(s, n, fn) s.scripts[n] = fn end end
-    if k == "HookScript" then return function() end end
-    if k == "SetText" then return function(s, v) s.text = v end end
-    if k == "GetText" then return function(s) return s.text end end
-    if k == "GetChecked" then return function() return true end end
-    if k == "GetPoint" then return function() return "CENTER", nil, "CENTER", 0, 0 end end
-    if k:match("^Create") or k == "GetFontString" then return function() return mock() end end
-    if k:match("Width$") or k:match("Height$") then return function() return 200 end end
-    if k == "GetFrameLevel" then return function() return 1 end end
-    if k == "GetCenter" then return function() return 100, 100 end end
-    return function() end
-  end })
+local mock
+-- Methods are made once per name and shared, so the mock itself doesn't make
+-- garbage (keeps the memory numbers in tools/mem.lua honest).
+local methods = {}
+local function method(k)
+  if methods[k] then return methods[k] end
+  local fn
+  if k == "Show" then fn = function(s) s.shown = true; if s.scripts.OnShow then s.scripts.OnShow(s) end end
+  elseif k == "Hide" then fn = function(s) s.shown = false end
+  elseif k == "SetShown" then fn = function(s, v) if v then s:Show() else s:Hide() end end
+  elseif k == "IsShown" then fn = function(s) return s.shown end
+  elseif k == "SetScript" then fn = function(s, n, f) s.scripts[n] = f end
+  elseif k == "HookScript" then fn = function() end
+  elseif k == "SetText" then fn = function(s, v) s.text = v end
+  elseif k == "GetText" then fn = function(s) return s.text end
+  elseif k == "GetChecked" then fn = function() return true end
+  elseif k == "GetPoint" then fn = function() return "CENTER", nil, "CENTER", 0, 0 end
+  elseif k:match("^Create") or k == "GetFontString" then fn = function() return mock() end
+  elseif k:match("Width$") or k:match("Height$") then fn = function() return 200 end
+  elseif k == "GetFrameLevel" then fn = function() return 1 end
+  elseif k == "GetCenter" then fn = function() return 100, 100 end
+  else fn = function() end end
+  methods[k] = fn
+  return fn
+end
+local mockMeta = { __index = function(t, k) return method(k) end }
+function mock()
+  return setmetatable({ shown = false, scripts = {} }, mockMeta)
 end
 CreateFrame = function() return mock() end
 UIParent, Minimap, GameTooltip, ItemRefTooltip = mock(), mock(), mock(), mock()
@@ -89,6 +98,27 @@ end
 check(#ns.guideOrder == 13, "13 guides registered")
 ns.eventFrame.scripts.OnEvent(ns.eventFrame, "ADDON_LOADED", "ForeverCampfire")
 check(ns.db and ns.char, "saved variables initialised")
+do
+  local built = 0
+  for _, k in ipairs(ns.guideOrder) do if ns.IsGuideBuilt(k) then built = built + 1 end end
+  check(built == 0, "no guide data built at login (" .. built .. ")")
+  check(rawget(ns, "Camp") == nil and rawget(ns, "Pins") == nil, "camp and map pin data wait until used")
+  ns.Refresh()
+  built = 0
+  for _, k in ipairs(ns.guideOrder) do if ns.IsGuideBuilt(k) then built = built + 1 end end
+  check(built == 0, "a refresh with no professions builds nothing")
+  ns.ShowMain(); ns.UpdateTracker()
+  built = 0
+  for _, k in ipairs(ns.guideOrder) do if ns.IsGuideBuilt(k) then built = built + 1 end end
+  check(built == 0, "welcome screen and tracker build no guides (" .. built .. ")")
+  local g = ns.guides.alchemy
+  check(g.name == "Alchemy" and not ns.IsGuideBuilt("alchemy"), "a guide's name and icon don't build it")
+  check(#g.steps > 5 and ns.IsGuideBuilt("alchemy") and g.steps[1].guide == g, "reading steps builds the guide")
+  local other = (ns.Faction() == "Horde") and "Alliance" or "Horde"
+  local leak = false
+  for _, st in ipairs(g.steps) do for _, o in ipairs(st.options or {}) do if o.f == other then leak = true end end end
+  check(not leak, "a guide built after login is filtered for your faction")
+end
 
 local function refresh() ns.Refresh() end
 local function cur(k) local s = ns.CurrentStep(ns.guides[k]); return s and s.id end
@@ -363,6 +393,25 @@ for k in pairs(ns.Camp.items) do campProfs = campProfs + 1 end
 check(campProfs == 12, "camp items for all 12 professions")
 ns.ShowMain("camp"); ns.ShowMain("both"); ns.views.both = "recipes"; ns.UpdateMain(); ns.views.both = "route"
 check(true, "Camp tab and Recipes view open without errors")
+do
+  local area = mock()
+  ns.LayoutCamp(area, 560); ns.LayoutRecipes(area, 560, ns.Collections.cooking)
+  local up = 0
+  for _, cv in ipairs(ns.listCanvases) do if cv.root:IsShown() then up = up + 1 end end
+  check(up == 1, "Recipes after Camp hides the Camp tiles (" .. up .. " views shown)")
+  ns.LayoutCamp(area, 560); up = 0
+  for _, cv in ipairs(ns.listCanvases) do if cv.root:IsShown() then up = up + 1 end end
+  check(up == 1, "Camp after Recipes hides the recipe rows")
+  ns.recipeFilter = "all"
+  local h = ns.LayoutRecipes(area, 560, ns.Collections.cooking, 0, 400)
+  local rowsUp = 0
+  for _, cv in ipairs(ns.listCanvases) do if cv.root:IsShown() then for _, r in ipairs(cv.rows) do if r:IsShown() then rowsUp = rowsUp + 1 end end end end
+  check(h > 100 * 44 and rowsUp > 0 and rowsUp <= 25, "recipe list only draws rows near the screen (" .. rowsUp .. " of 130)")
+  ns.LayoutRecipes(area, 560, ns.Collections.cooking, 3000, 400)
+  local far = 0
+  for _, cv in ipairs(ns.listCanvases) do if cv.root:IsShown() then for _, r in ipairs(cv.rows) do if r:IsShown() then far = far + 1; end end end end
+  check(far > 0 and far <= 25, "scrolling down draws the rows there instead")
+end
 C_TradeSkillUI = nil
 
 -- Scenario 11: UI builds and updates without errors

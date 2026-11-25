@@ -18,8 +18,8 @@ local function tooltip(owner)
     local g = ns.guides[key]
     if #g.skills == 1 then
       local sk = ns.Skill(key)
-      local step = ns.CurrentStep(g)
       if sk.known then
+        local step = ns.CurrentStep(g)
         GameTooltip:AddDoubleLine("|T" .. g.icon .. ":14|t " .. ns.SkillDisplayName(key), sk.rank .. "/" .. sk.max, 1, 0.82, 0, 1, 1, 1)
         if step then GameTooltip:AddLine("     " .. step.title, 0.8, 0.8, 0.8) end
       end

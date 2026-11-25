@@ -8,6 +8,8 @@
 --          camp = true (camp item, not food)
 local _, ns = ...
 
+-- The list is built the first time something reads .recipes.
+ns.LazyCollection({ skill = "cooking", title = "Cooking recipes", checked = "2026-11-24" }, function()
 local list = {}
 local function R(name, skill, source, reagents, extra)
   local r = { name = name, skill = skill, source = source, reagents = reagents }
@@ -157,5 +159,5 @@ R("Dirge's Kickin' Chimaerok Chops", 300, "Quest: Dirge's Kickin' Chimaerok Chop
 R("Smoked Redgill", 300, VM, "1 Raw Redgill")
 R("Smoked Desert Dumplings", 325, TR, "1 Sandworm Meat, 1 Soothing Spices")
 
-ns.Collections = ns.Collections or {}
-ns.Collections.cooking = { skill = "cooking", title = "Cooking recipes", recipes = list, checked = "2026-11-24" }
+return list
+end)

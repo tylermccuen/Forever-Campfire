@@ -1,14 +1,20 @@
 -- Tailoring 1-300 for WoW Forever.
 -- Route checked 2026-11-24.
 local _, ns = ...
-local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
 
-ns.RegisterGuide({
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
   key = "tailoring",
   capitalTrainer = { H = "Snang in Orgrimmar", A = "Lawrence Schneider in Stormwind" },
   name = "Tailoring",
   skills = { "tailoring" },
   icon = "Interface\\Icons\\Trade_Tailoring",
+}, function()
+local Craft, Opt, Train = ns.Craft, ns.Opt, ns.Train
+
+ns.RegisterGuide({
+  key = "tailoring",
   checked = "2026-11-24",
   verb = "Make",
   buyLabel = "Materials for this step:",
@@ -77,3 +83,4 @@ ns.RegisterGuide({
       { "Pattern: world drop or Auction House.", "Rare Wizardweave Turban pattern? Grab it: it also takes you to 300." }),
   },
 })
+end)

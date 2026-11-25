@@ -5,12 +5,18 @@
 -- Steps without `count` in their options mean "cook all of them".
 local _, ns = ...
 
-ns.RegisterGuide({
+-- The header is all the addon needs until this guide is opened or its
+-- profession is learned; the rest is built on first use.
+ns.LazyGuide({
   key = "both",
-  recipePrefix = "Recipe: ",
+  capitalTrainer = false,   -- no trainer of its own (the welcome screen lists Fishing and Cooking)
   name = "Fish + Cook",
   skills = { "fishing", "cooking" },
   icon = "Interface\\Icons\\INV_Misc_Fish_02",
+}, function()
+ns.RegisterGuide({
+  key = "both",
+  recipePrefix = "Recipe: ",
   checked = "2026-11-24",
   steps = {
     { id = "learnf", kind = "learn", skill = "fishing", title = "Learn Fishing",
@@ -157,3 +163,4 @@ ns.RegisterGuide({
       notes = { "Short of 300? Cook leftover Redgill, fish more Nightfin outside 12:00-18:00, or buy some on the Auction House." } },
   },
 })
+end)

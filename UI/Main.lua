@@ -159,7 +159,13 @@ local function updateTree()
     treeContent:Hide(); listContent:Show()
     if treeScroll:GetScrollChild() ~= listContent then treeScroll:SetScrollChild(listContent) end
     listContent:SetWidth(W)
-    local h = (v == "camp") and ns.LayoutCamp(listContent, W) or ns.LayoutRecipes(listContent, W, collectionFor(selected))
+    local h
+    if v == "camp" then
+      h = ns.LayoutCamp(listContent, W)
+    else
+      local top = (lastGuideShown == key and treeScroll.GetVerticalScroll) and treeScroll:GetVerticalScroll() or 0
+      h = ns.LayoutRecipes(listContent, W, collectionFor(selected), top, treeScroll:GetHeight())
+    end
     listContent:SetHeight(h)
   end
   if lastGuideShown ~= key then
@@ -448,6 +454,12 @@ local function build()
   treeScroll = CreateFrame("ScrollFrame", nil, treePanel, "UIPanelScrollFrameTemplate")
   treeScroll:SetPoint("TOPLEFT", 6, -6)
   treeScroll:SetPoint("BOTTOMRIGHT", -28, 6)
+  -- long lists only draw the rows in view, so draw more as you scroll
+  treeScroll:HookScript("OnVerticalScroll", function(self, offset)
+    if listContent:IsShown() and currentView() == "recipes" then
+      ns.LayoutRecipes(listContent, self:GetWidth(), collectionFor(selected), offset, self:GetHeight())
+    end
+  end)
   treeContent = CreateFrame("Frame", nil, treeScroll)
   treeContent:SetSize(10, 10)
   treeScroll:SetScrollChild(treeContent)

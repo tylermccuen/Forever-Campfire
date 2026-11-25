@@ -71,16 +71,75 @@ function ns.InitDB()
 end
 
 -- Guides register themselves from the Data files.
+-- A data file calls ns.LazyGuide(header, build): only the header (key, name,
+-- icon, skills, capitalTrainer) exists until something reads another field of
+-- the guide. Then build() runs once and calls ns.RegisterGuide with the rest.
+-- So professions a character doesn't have cost almost nothing.
+local pendingGuides = {}
+ns.guideBuilt = {}       -- callbacks: fn(guide) after a guide is built
+
+function ns.LazyGuide(header, build)
+  local key = header.key
+  pendingGuides[key] = build
+  ns.guides[key] = setmetatable(header, { __index = function(t, k)
+    if ns.BuildGuide(key) then return rawget(t, k) end
+  end })
+  table.insert(ns.guideOrder, key)
+end
+
+function ns.IsGuideBuilt(key) return pendingGuides[key] == nil end
+
+function ns.BuildGuide(key)
+  local build = pendingGuides[key]
+  if not build then return false end
+  pendingGuides[key] = nil
+  setmetatable(ns.guides[key], nil)
+  build()
+  return true
+end
+
 function ns.RegisterGuide(g)
   assert(g.key and g.steps, "guide needs key and steps")
-  ns.guides[g.key] = g
-  table.insert(ns.guideOrder, g.key)
+  local stub = ns.guides[g.key]
+  if stub and stub ~= g then
+    for k, v in pairs(g) do stub[k] = v end
+    g = stub
+  else
+    ns.guides[g.key] = g
+    table.insert(ns.guideOrder, g.key)
+  end
   for i, step in ipairs(g.steps) do
     step.index = i
     step.guide = g
     step.skill = step.skill or g.skills[1]
   end
+  if ns.factionReady and ns.ApplyFaction then ns.ApplyFaction(g) end
+  for _, fn in ipairs(ns.guideBuilt) do fn(g) end
 end
+
+-- Other big data tables (camp items, map pins, recipe lists) are built the
+-- first time something reads ns.<name>.
+local lazyData = {}
+function ns.Lazy(name, build) lazyData[name] = build end
+-- A recipe collection whose `recipes` list is built on first use.
+function ns.LazyCollection(header, build)
+  ns.Collections = ns.Collections or {}
+  ns.Collections[header.skill] = setmetatable(header, { __index = function(t, k)
+    if k ~= "recipes" then return nil end
+    setmetatable(t, nil)
+    t.recipes = build()
+    return t.recipes
+  end })
+end
+
+setmetatable(ns, { __index = function(t, k)
+  local build = lazyData[k]
+  if not build then return nil end
+  lazyData[k] = nil
+  local v = build()
+  rawset(t, k, v)
+  return v
+end })
 
 -- Short constructors for crafting data files.
 --   ns.Craft(id, from, to, title, options, notes, extra)  -> "level" step
