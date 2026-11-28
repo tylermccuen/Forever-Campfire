@@ -2,6 +2,7 @@
 
 ## 0.6.2
 
+- Fixed: the close button didn't work during combat.
 - Fixed: opening Recipes after the Camp tab drew both on top of each other.
 - Camp tab: roomier tiles, names wrap instead of cutting off, and each tile shows the boss and dungeon on their own lines.
 - Uses about a third less memory: guides for professions you don't have aren't loaded until you open them.

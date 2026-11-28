@@ -471,6 +471,9 @@ local function build()
 
   local close = CreateFrame("Button", nil, f, "UIPanelCloseButton")
   close:SetPoint("TOPRIGHT", -4, -4)
+  -- The template's own click goes through Blizzard's panel manager, which is
+  -- locked in combat. This window isn't protected, so just hide it.
+  close:SetScript("OnClick", function() f:Hide() end)
 
   local grip = CreateFrame("Button", nil, f)
   grip:SetSize(16, 16); grip:SetPoint("BOTTOMRIGHT", -6, 6)
