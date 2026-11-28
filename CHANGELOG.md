@@ -2,6 +2,8 @@
 
 ## 0.6.2
 
+- Controller friendly: new key bindings (Options > Keybindings > AddOns > Forever Campfire) for opening the guide, switching tabs, moving step by step through the route, switching recipe options, Route and Recipes, the shopping list, the tracker and Sizzle!. Put them on gamepad buttons there or in ConsolePort. Moving to a step unfolds its rank and scrolls to it.
+- Works with ConsolePort's on-screen cursor.
 - Fixed: the close button didn't work during combat.
 - Fixed: opening Recipes after the Camp tab drew both on top of each other.
 - Camp tab: roomier tiles, names wrap instead of cutting off, and each tile shows the boss and dungeon on their own lines.

@@ -67,6 +67,7 @@ end
 
 local function build()
   g = CreateFrame("Button", "ForeverCampfireSizzle", UIParent, "BackdropTemplate")
+  ns.RegisterControllerFrame(g)
   g:SetBackdrop(ns.BACKDROP)
   g:SetBackdropColor(0.12, 0.05, 0, 0.92); g:SetBackdropBorderColor(1, 0.5, 0.1, 1)
   g:SetSize(W + 30, 96)
@@ -157,6 +158,11 @@ function ns.ShowMiniGame()
   if not g then build() end
   lastCast = GetTime() + 25
   g:Show()
+end
+
+-- Key binding: same as clicking the Sizzle! bar. Does nothing when it's hidden.
+function ns.SizzleHit()
+  if g and g:IsShown() then flip() end
 end
 
 -- for the offline test

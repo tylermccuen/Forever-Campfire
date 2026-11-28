@@ -24,6 +24,10 @@ Leveling guide for every WoW Forever profession (Cooking, Fishing, First Aid, Mi
 - **Tracker**: a small movable panel. It follows the profession you last gained a point in; right-click it to pick one.
 - **Sizzle!**: a little timing mini-game that pops up while you craft from a profession window (never while fishing). Left-click inside the gold zone to build a combo; right-drag to move it. It's just for fun and doesn't change anything about the craft. Turn it off with the checkbox at the bottom of the guide.
 
+## Controller
+
+Every action has a key binding (Options > Keybindings > AddOns > Forever Campfire), so it can go on a gamepad button there or in ConsolePort: open or close, next and previous tab, next and previous step (scrolls in the Recipes and Camp lists), back to the step you're on, switch recipe option, switch Route and Recipes, shopping list, tracker on and off, tracker's profession, and Sizzle!. The window never takes gamepad buttons for itself, so movement and abilities keep working while it's open. The windows register with ConsolePort's cursor when ConsolePort is installed (`UI/Controller.lua`).
+
 ## Adding a profession (same layout)
 1. Add `Data/<Profession>.lua` in two parts (see `Data/Mining.lua`):
    ```lua

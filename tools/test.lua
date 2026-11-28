@@ -394,6 +394,36 @@ check(campProfs == 12, "camp items for all 12 professions")
 ns.ShowMain("camp"); ns.ShowMain("both"); ns.views.both = "recipes"; ns.UpdateMain(); ns.views.both = "route"
 check(true, "Camp tab and Recipes view open without errors")
 do
+  -- controller / key binding actions
+  ns.ShowMain("alchemy")
+  ns.selectedStep = nil
+  local g = ns.guides.alchemy
+  local start = ns.CurrentStep(g)
+  ForeverCampfire_Binding("nextstep")
+  local moved = ns.selectedStep
+  check(moved and moved ~= start, "Next step binding selects another step")
+  ForeverCampfire_Binding("prevstep")
+  check(ns.selectedStep == start, "Previous step binding goes back")
+  ForeverCampfire_Binding("now")
+  check(ns.selectedStep == nil, "Back to now binding clears the selection")
+  -- find a step with two options and switch between them
+  local fork
+  for _, st in ipairs(g.steps) do if #ns.Options(st) > 1 then fork = st break end end
+  ns.selectedStep = fork
+  local _, before = ns.ChosenOption(fork)
+  ForeverCampfire_Binding("option")
+  local _, after = ns.ChosenOption(fork)
+  check(fork and before ~= after, "Switch option binding changes the recipe choice")
+  ns.ClearChoice(fork)
+  local ok = pcall(function()
+    for _, a in ipairs({ "nexttab", "prevtab", "view", "shop", "shop", "tracker", "tracker", "trackernext", "sizzle", "toggle", "toggle", "nope" }) do
+      ForeverCampfire_Binding(a)
+    end
+  end)
+  check(ok, "every key binding runs without errors")
+  check(BINDING_HEADER_FORECAMP == "Forever Campfire" and BINDING_NAME_FORECAMP_NEXTSTEP, "key bindings have names in the Keybindings menu")
+end
+do
   local missing = {}
   for _, key in ipairs({ "firstaid", "alchemy", "blacksmithing", "enchanting", "engineering", "leatherworking", "tailoring", "cooking" }) do
     for _, step in ipairs(ns.guides[key].steps) do

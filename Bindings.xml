@@ -1,0 +1,16 @@
+<Bindings>
+  <!-- Key bindings (Options > Keybindings > AddOns > Forever Campfire).
+       With a controller, put these on gamepad buttons there or in ConsolePort. -->
+  <Binding name="FORECAMP_TOGGLE" header="FORECAMP" category="ADDONS">ForeverCampfire_Binding("toggle")</Binding>
+  <Binding name="FORECAMP_NEXTTAB" category="ADDONS">ForeverCampfire_Binding("nexttab")</Binding>
+  <Binding name="FORECAMP_PREVTAB" category="ADDONS">ForeverCampfire_Binding("prevtab")</Binding>
+  <Binding name="FORECAMP_NEXTSTEP" category="ADDONS">ForeverCampfire_Binding("nextstep")</Binding>
+  <Binding name="FORECAMP_PREVSTEP" category="ADDONS">ForeverCampfire_Binding("prevstep")</Binding>
+  <Binding name="FORECAMP_NOW" category="ADDONS">ForeverCampfire_Binding("now")</Binding>
+  <Binding name="FORECAMP_OPTION" category="ADDONS">ForeverCampfire_Binding("option")</Binding>
+  <Binding name="FORECAMP_VIEW" category="ADDONS">ForeverCampfire_Binding("view")</Binding>
+  <Binding name="FORECAMP_SHOP" category="ADDONS">ForeverCampfire_Binding("shop")</Binding>
+  <Binding name="FORECAMP_TRACKER" category="ADDONS">ForeverCampfire_Binding("tracker")</Binding>
+  <Binding name="FORECAMP_TRACKERNEXT" category="ADDONS">ForeverCampfire_Binding("trackernext")</Binding>
+  <Binding name="FORECAMP_SIZZLE" category="ADDONS">ForeverCampfire_Binding("sizzle")</Binding>
+</Bindings>

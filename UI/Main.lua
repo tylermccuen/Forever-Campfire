@@ -442,6 +442,7 @@ end
 
 local function build()
   f = CreateFrame("Frame", "ForeverCampfireFrame", UIParent, "BackdropTemplate")
+  ns.RegisterControllerFrame(f)
   f:SetBackdrop({ bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark", edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
                   tile = true, tileSize = 32, edgeSize = 24, insets = { left = 6, right = 6, top = 6, bottom = 6 } })
   local sz = ns.db.mainSize2
@@ -635,6 +636,89 @@ end
 
 function ns.ToggleMain()
   if f and f:IsShown() then f:Hide() else ns.ShowMain() end
+end
+
+---------------------------------------------------------------------------
+-- Controller and keyboard navigation (used by the key bindings in
+-- Bindings.xml, which players can put on gamepad buttons).
+---------------------------------------------------------------------------
+local function isOpen() return f ~= nil and f:IsShown() end
+
+-- Next or previous tab (delta = 1 or -1). Opens the window if it's closed.
+function ns.NavTab(delta)
+  if not isOpen() then ns.ShowMain(); return end
+  local keys = tabKeys()
+  if #keys == 0 then return end
+  local idx = 1
+  for i, k in ipairs(keys) do if k == selected then idx = i end end
+  idx = (idx - 1 + delta) % #keys + 1
+  ns.selectedStep = nil; ns.detailInfo = nil
+  ns.ShowMain(keys[idx])
+end
+
+local function scrollTo(y)
+  if not treeScroll or not treeScroll.SetVerticalScroll then return end
+  local range = (treeScroll.GetVerticalScrollRange and treeScroll:GetVerticalScrollRange()) or 0
+  pcall(treeScroll.SetVerticalScroll, treeScroll, math.max(0, math.min(range, y)))
+end
+
+-- Next or previous step on the route. In the Recipes and Camp views it scrolls
+-- the list by most of a page instead.
+function ns.NavStep(delta)
+  if not isOpen() then ns.ShowMain(); return end
+  local v = currentView()
+  if v ~= "route" then
+    local cur = (treeScroll.GetVerticalScroll and treeScroll:GetVerticalScroll()) or 0
+    scrollTo(cur + delta * math.floor(treeScroll:GetHeight() * 0.8))
+    return
+  end
+  local g = ns.guides[selected]
+  local order, bandOf = {}, {}
+  for _, band in ipairs(ns.Bands(g)) do
+    for _, st in ipairs(band.steps) do table.insert(order, st); bandOf[st] = g.key .. band.rank end
+  end
+  if #order == 0 then return end
+  local from = ns.selectedStep
+  if not from or from.guide ~= g then from = ns.CurrentStep(g) end
+  local idx = 1
+  for i, st in ipairs(order) do if st == from then idx = i end end
+  idx = math.max(1, math.min(#order, idx + delta))
+  local step = order[idx]
+  ns.treeOpen[bandOf[step]] = true        -- unfold its rank so you can see it
+  ns.detailInfo = nil
+  ns.SelectStep(step)
+  if ns.treeStepY and ns.treeStepY[step] then scrollTo(ns.treeStepY[step] - 80) end
+end
+
+-- Back to the step you're on.
+function ns.NavNow()
+  if not isOpen() then ns.ShowMain(); return end
+  ns.selectedStep = nil; ns.detailInfo = nil
+  ns.UpdateMain()
+  if currentView() == "route" then scrollTo((ns.treeCurrentY or 0) - 80) end
+end
+
+-- Switch between the recipe options of the selected step (A, B, ...).
+function ns.NavOption()
+  if not isOpen() or currentView() ~= "route" then return end
+  local g = ns.guides[selected]
+  local step = ns.selectedStep
+  if not step or step.guide ~= g then step = ns.CurrentStep(g) end
+  if not step then return end
+  local opts = ns.Options(step)
+  if #opts < 2 then return end
+  local _, idx = ns.ChosenOption(step)
+  ns.selectedStep = step
+  ns.SetChoice(step, (idx or 1) % #opts + 1)
+end
+
+-- Route, Recipes (where there is a recipe list).
+function ns.NavView()
+  if not isOpen() or selected == "camp" then return end
+  if not collectionFor(selected) then return end
+  ns.views[selected] = (currentView() == "route") and "recipes" or "route"
+  ns.detailInfo = nil
+  ns.UpdateMain()
 end
 
 ns.OnRefresh(function() ns.UpdateMain() end)

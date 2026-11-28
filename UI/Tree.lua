@@ -218,6 +218,8 @@ function ns.LayoutTree(guide, W)
   local anyCurrent = false
   for _, b in ipairs(bands) do if b.current then anyCurrent = true end end
   ns.treeCurrentY = 0
+  ns.treeStepY = ns.treeStepY or {}            -- [step] = top of its tile row (for scrolling to it)
+  for k in pairs(ns.treeStepY) do ns.treeStepY[k] = nil end
   local seenCurrent = false
 
   for bi, band in ipairs(bands) do
@@ -283,6 +285,7 @@ function ns.LayoutTree(guide, W)
             fillTile(t, step, state, opt, j, j == chosenIdx, isNext, tw, 64)
           end
           if state == "current" then ns.treeCurrentY = rowTop end
+          ns.treeStepY[step] = rowTop
           local bottom = rowTop + 64
           -- merge
           for j = 1, n do
@@ -297,6 +300,7 @@ function ns.LayoutTree(guide, W)
           t:ClearAllPoints(); t:SetPoint("TOPLEFT", content, "TOPLEFT", cx - math.floor(tw / 2), -y)
           fillTile(t, step, state, opts[1], nil, true, isNext, tw, 56)
           if state == "current" then ns.treeCurrentY = y end
+          ns.treeStepY[step] = y
           y = y + 56
         end
         first = false

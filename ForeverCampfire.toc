@@ -41,4 +41,5 @@ UI\Tracker.lua
 UI\Minimap.lua
 UI\MiniGame.lua
 UI\MapPins.lua
+UI\Controller.lua
 Hooks.lua

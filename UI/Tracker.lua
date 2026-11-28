@@ -4,8 +4,21 @@ local C = ns.C
 
 local t
 
+-- Which profession the tracker follows: auto, then each guide in turn.
+function ns.CycleTrackerGuide()
+  local order = { "auto" }
+  for _, k in ipairs(ns.guideOrder) do table.insert(order, k) end
+  local cur = ns.char.trackerGuide or "auto"
+  local nextKey = order[1]
+  for i, k in ipairs(order) do if k == cur then nextKey = order[i % #order + 1] end end
+  ns.char.trackerGuide = nextKey
+  ns.Print("Tracker shows: " .. (nextKey == "auto" and "auto (the skill you last leveled)" or ns.guides[nextKey].name))
+  ns.RequestRefresh()
+end
+
 local function build()
   t = CreateFrame("Button", "ForeverCampfireTracker", UIParent, "BackdropTemplate")
+  ns.RegisterControllerFrame(t)
   t:SetBackdrop(ns.BACKDROP)
   t:SetBackdropColor(0, 0, 0, 0.7); t:SetBackdropBorderColor(1, 0.82, 0, 0.8)
   t:SetWidth(280)
@@ -22,15 +35,7 @@ local function build()
   end)
   t:SetScript("OnClick", function(self, btn)
     if btn == "RightButton" then
-      -- cycle: auto -> cooking -> fishing -> both -> auto
-      local order = { "auto" }
-      for _, k in ipairs(ns.guideOrder) do table.insert(order, k) end
-      local cur = ns.char.trackerGuide or "auto"
-      local nextKey = order[1]
-      for i, k in ipairs(order) do if k == cur then nextKey = order[i % #order + 1] end end
-      ns.char.trackerGuide = nextKey
-      ns.Print("Tracker shows: " .. (nextKey == "auto" and "auto (the skill you last leveled)" or ns.guides[nextKey].name))
-      ns.RequestRefresh()
+      ns.CycleTrackerGuide()
     else
       ns.ShowMain()
     end
